@@ -63,11 +63,6 @@ const handler = mw({
         }),
       )
 
-      //eslint-disable-next-line no-console
-      console.log("cookieJwt", cookieJwt)
-      //eslint-disable-next-line no-console
-      console.log("localStorageJwt", localStorageJwt)
-
       send(localStorageJwt)
     },
   ],
