@@ -1,4 +1,4 @@
-import apiConfig from "@/api/config"
+import apiConfig from "@/api/apiConfig"
 import BaseModel from "@/db/models/BaseModel"
 import CommentModel from "@/db/models/CommentModel"
 import UserModel from "@/db/models/UserModel"
