@@ -1,6 +1,6 @@
-import BaseModel from "@/db/models/baseModel"
-import PostModel from "@/db/models/postModel"
-import UserModel from "@/db/models/userModel"
+import BaseModel from "@/db/models/BaseModel"
+import PostModel from "@/db/models/PostModel"
+import UserModel from "@/db/models/UserModel"
 
 class CommentModel extends BaseModel {
   static tableName = "comments"

@@ -1,5 +1,5 @@
-import BaseModel from "@/db/models/baseModel"
-import UserModel from "@/db/models/userModel"
+import BaseModel from "@/db/models/BaseModel"
+import UserModel from "@/db/models/UserModel"
 
 class PostModel extends BaseModel {
   static tableName = "posts"

@@ -6,3 +6,4 @@ Create a .env.local file
 Set the following env variables:
 
 - DB\_\_CONNECTION
+- SECURITY\_\_HASH_PASSWORD_ITERATION

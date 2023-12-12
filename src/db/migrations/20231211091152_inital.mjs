@@ -7,7 +7,6 @@ export const up = async (db) => {
     table.text("hashedPassword").notNullable()
     table.text("salt").notNullable()
     table.boolean("isAdmin").defaultTo(false)
-    table.boolean("isActive").defaultTo(true)
     table.timestamps(true, true)
   })
 
