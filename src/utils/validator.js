@@ -9,3 +9,6 @@ export const passwordValidator = string()
     /(?=.*\p{Lu})(?=.*\p{Ll})(?=.*\d)(?=.*[^\d\p{L}]).*/u,
     "Must contain: 1 lower & 1 upper letters, 1 digit and 1 spe. char.",
   )
+export const titleValidator = string().min(10).max(500).label("Title")
+export const contentValidator = string().min(10).max(5000).label("Content")
+export const tokenValidator = string().label("Token")

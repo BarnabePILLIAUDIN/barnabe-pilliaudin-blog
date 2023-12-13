@@ -41,7 +41,7 @@ const handler = mw({
       const localStorageJwt = UserModel.generateJWT(user)
       const cookieJwt = jsonwebtoken.sign(
         {
-          token: { localStorageJwt },
+          token: { [webConfig.security.session.cookie.key]: localStorageJwt },
         },
         apiConfig.security.jwt.secret,
         {
