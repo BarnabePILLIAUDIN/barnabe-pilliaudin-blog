@@ -1,4 +1,4 @@
-import { string } from "yup"
+import { number, string } from "yup"
 
 export const firstNameValidator = string().min(3).max(255).label("First name")
 export const lastNameValidator = string().min(3).max(255).label("Last name")
@@ -12,3 +12,4 @@ export const passwordValidator = string()
 export const titleValidator = string().min(10).max(500).label("Title")
 export const contentValidator = string().min(10).max(5000).label("Content")
 export const tokenValidator = string().label("Token")
+export const idValidator = number().min(1).label("Id")

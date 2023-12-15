@@ -10,6 +10,17 @@ import {
 } from "@/utils/validator"
 
 const handler = mw({
+  GET: [
+    async ({ models: { UserModel }, send }) => {
+      const users = await UserModel.query()
+      const sanitizedUsers = users.map(
+        ({ hashedPassword: _password, salt: _salt, ...sanitizedUser }) =>
+          sanitizedUser,
+      )
+
+      send(sanitizedUsers, { count: sanitizedUsers.length })
+    },
+  ],
   POST: [
     validate({
       body: {
