@@ -1,5 +1,8 @@
 import apiConfig from "@/api/apiConfig"
 import HttpAuthenticationError from "@/api/errors/HttpAuthenticationError"
+import genCookiesJwt from "@/api/utils/genCookiesJWT"
+import genSetCookies from "@/api/utils/genSetCookies"
+import UserModel from "@/db/models/UserModel"
 import webConfig from "@/web/webConfig"
 import jsonwebtoken, {
   TokenExpiredError,
@@ -42,7 +45,18 @@ const auth =
       ctx.user = user
     } catch (err) {
       if (err instanceof TokenExpiredError) {
-        throw new HttpAuthenticationError("Expired credentials.")
+        // If the token is expired, we'll generate a new one
+        const {
+          payload: { user },
+        } = jsonwebtoken.decode(localStorageJwt)
+        const newLocalStorageJwt = UserModel.generateJWT(user)
+        const newCookieJwt = genCookiesJwt(newLocalStorageJwt)
+
+        ctx.res.setHeader("set-cookie", genSetCookies(newCookieJwt))
+        ctx.token = localStorageJwt
+        next()
+
+        return
       }
 
       if (err instanceof JsonWebTokenError) {
