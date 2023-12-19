@@ -30,8 +30,8 @@ const handler = mw({
         password: passwordValidator.required(),
       },
     }),
-    async ({ res, db, input, models: { UserModel }, send }) => {
-      const existingUser = await UserModel.query(db)
+    async ({ res, input, models: { UserModel }, send }) => {
+      const existingUser = await UserModel.query()
         .where({ email: input.body.email })
         .first()
 
@@ -46,7 +46,7 @@ const handler = mw({
       )
 
       try {
-        await UserModel.query(db).insert({
+        await UserModel.query().insert({
           firstName: input.body.firstName,
           lastName: input.body.lastName,
           email: input.body.email,

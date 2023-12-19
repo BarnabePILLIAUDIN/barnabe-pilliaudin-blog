@@ -11,7 +11,7 @@ import jsonwebtoken, {
 
 const auth =
   (isRequired = true) =>
-  (ctx) => {
+  async (ctx) => {
     const {
       input: {
         body: { token: localStorageJwt },
@@ -22,25 +22,25 @@ const auth =
       next,
     } = ctx
 
-    if (!localStorageJwt && !cookieJwt && isRequired) {
-      throw new HttpAuthenticationError("Missing credentials.")
-    }
+    // If (!localStorageJwt && !cookieJwt && isRequired) {
+    //   throw new HttpAuthenticationError("Missing credentials.")
+    // }
 
     try {
       const {
         payload: { user },
       } = jsonwebtoken.verify(localStorageJwt, apiConfig.security.jwt.secret)
-      const { token: extractedCookieToken } = jsonwebtoken.verify(
-        cookieJwt,
-        apiConfig.security.jwt.secret,
-      )
+      // Const { token: extractedCookieToken } = jsonwebtoken.verify(
+      //   cookieJwt,
+      //   apiConfig.security.jwt.secret,
+      // )
 
-      if (
-        localStorageJwt !==
-        extractedCookieToken[webConfig.security.session.cookie.key]
-      ) {
-        throw new HttpAuthenticationError("Invalid credentials.")
-      }
+      // If (
+      //   localStorageJwt !==
+      //   extractedCookieToken[webConfig.security.session.cookie.key]
+      // ) {
+      //   throw new HttpAuthenticationError("Invalid credentials.")
+      // }
 
       ctx.user = user
     } catch (err) {
@@ -67,7 +67,7 @@ const auth =
       throw err
     }
 
-    next()
+    await next()
   }
 
 export default auth
