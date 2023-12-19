@@ -54,6 +54,7 @@ const auth =
 
         ctx.res.setHeader("set-cookie", genSetCookies(newCookieJwt))
         ctx.token = localStorageJwt
+        ctx.user = user
         next()
 
         return
