@@ -74,9 +74,7 @@ const SignUp = () => {
 
   return (
     <>
-      <h2 className="text-3xl font-bold text-center py-5 border-b-4 border-black uppercase">
-        sign up
-      </h2>
+      <h2 className="text-3xl font-bold text-center py-5 uppercase">sign up</h2>
       {isSuccess ? (
         <div className=" mx-5 py-2 px-5 mt-5">
           <Alert variant="info">
@@ -91,7 +89,7 @@ const SignUp = () => {
           className="block mx-auto w-screen "
         >
           <Form className="flex justify-center w-screen ">
-            <div className="flex flex-col gap-4 mt-16 w-96 border-2 border-black p-5 rounded-lg">
+            <div className="flex flex-col gap-4 w-96 border-2 border-black p-5 rounded-lg">
               {formFields.map((field) => (
                 <FormField key={field.name} {...field} />
               ))}
@@ -103,7 +101,10 @@ const SignUp = () => {
         </Formik>
       )}
       <div className="mt-7 flex justify-center">
-        <Link href="/sign-in" className="text-center underline font-semibold">
+        <Link
+          href="/sign-in"
+          className="text-center underline font-semibold text-lg"
+        >
           Already have an account? Sign in
         </Link>
       </div>

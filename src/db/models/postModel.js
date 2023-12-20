@@ -10,7 +10,7 @@ class PostModel extends BaseModel {
         relation: BaseModel.BelongToOneRelation,
         join: {
           from: "posts.userId",
-          to: "user.id",
+          to: "users.id",
         },
       },
     }

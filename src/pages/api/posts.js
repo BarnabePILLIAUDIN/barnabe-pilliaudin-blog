@@ -17,8 +17,35 @@ const handler = mw({
       },
     }),
     auth(),
-    ({ send, user }) => {
-      send(user)
+    async ({
+      send,
+      user,
+      input: {
+        body: { title, content },
+      },
+      models: { PostModel },
+      token,
+    }) => {
+      console.log(PostModel)
+      console.log(title, content, user.id)
+
+      try {
+        const newPost = await PostModel.query().insertAndFetch({
+          title,
+          content,
+          userId: user.id,
+        })
+
+        console.log(newPost)
+
+        if (token) {
+          send(newPost, { count: 1 }, token)
+        }
+
+        send(newPost, { count: 1 })
+      } catch (err) {
+        console.log(err)
+      }
     },
   ],
 })
