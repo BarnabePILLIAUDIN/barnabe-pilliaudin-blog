@@ -11,7 +11,7 @@ import jsonwebtoken, {
 
 const auth =
   (isRequired = true) =>
-  (ctx) => {
+  async (ctx) => {
     const {
       input: {
         body: { token: localStorageJwt },
@@ -55,7 +55,7 @@ const auth =
         ctx.res.setHeader("set-cookie", genSetCookies(newCookieJwt))
         ctx.token = localStorageJwt
         ctx.user = user
-        next()
+        await next()
 
         return
       }
@@ -67,7 +67,7 @@ const auth =
       throw err
     }
 
-    next()
+    await next()
   }
 
 export default auth

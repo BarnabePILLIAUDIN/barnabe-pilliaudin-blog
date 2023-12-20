@@ -1,6 +1,7 @@
 import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
+import sanitizePosts from "@/api/utils/sanitizePosts"
 import {
   titleValidator,
   contentValidator,
@@ -8,6 +9,13 @@ import {
 } from "@/utils/validator"
 
 const handler = mw({
+  GET: [
+    async ({ send, models: { PostModel } }) => {
+      const posts = await PostModel.query().withGraphFetched("[comments,user]")
+      const sanitizedPosts = sanitizePosts(posts)
+      send(sanitizedPosts, { count: posts.length })
+    },
+  ],
   POST: [
     validate({
       body: {
@@ -26,26 +34,17 @@ const handler = mw({
       models: { PostModel },
       token,
     }) => {
-      console.log(PostModel)
-      console.log(title, content, user.id)
+      const newPost = await PostModel.query().insertAndFetch({
+        title,
+        content,
+        userId: user.id,
+      })
 
-      try {
-        const newPost = await PostModel.query().insertAndFetch({
-          title,
-          content,
-          userId: user.id,
-        })
-
-        console.log(newPost)
-
-        if (token) {
-          send(newPost, { count: 1 }, token)
-        }
-
-        send(newPost, { count: 1 })
-      } catch (err) {
-        console.log(err)
+      if (token) {
+        send(newPost, { count: 1 }, token)
       }
+
+      send(newPost, { count: 1 })
     },
   ],
 })
