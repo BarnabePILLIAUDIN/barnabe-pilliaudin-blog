@@ -7,11 +7,11 @@ import PostModel from "@/db/models/PostModel"
 import knex from "knex"
 
 export const createContext = ({ req, res, next, requestId }) => {
-  const send = (result, meta = {}, token = null) => {
+  const send = (result, meta = {}, code = 200) => {
+    res.status(code)
     res.send({
       result: Array.isArray(result) ? result : [result],
       meta,
-      token,
     })
   }
   const db = knex(apiConfig.db)

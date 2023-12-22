@@ -32,17 +32,12 @@ const handler = mw({
         body: { title, content },
       },
       models: { PostModel },
-      token,
     }) => {
       const newPost = await PostModel.query().insertAndFetch({
         title,
         content,
         userId: user.id,
       })
-
-      if (token) {
-        send(newPost, { count: 1 }, token)
-      }
 
       send(newPost, { count: 1 })
     },

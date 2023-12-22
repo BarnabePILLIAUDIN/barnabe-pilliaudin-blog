@@ -1,5 +1,6 @@
 import apiConfig from "@/api/apiConfig"
 import HttpAuthenticationError from "@/api/errors/HttpAuthenticationError"
+import HTTP_CODES from "@/api/httpCodes"
 import genCookiesJwt from "@/api/utils/genCookiesJWT"
 import genSetCookies from "@/api/utils/genSetCookies"
 import UserModel from "@/db/models/UserModel"
@@ -20,6 +21,7 @@ const auth =
         cookies: { [webConfig.security.session.cookie.key]: cookieJwt },
       },
       next,
+      send,
     } = ctx
 
     if (!localStorageJwt && !cookieJwt && isRequired) {
@@ -45,17 +47,11 @@ const auth =
       ctx.user = user
     } catch (err) {
       if (err instanceof TokenExpiredError) {
-        // If the token is expired, we'll generate a new one
-        const {
-          payload: { user },
-        } = jsonwebtoken.decode(localStorageJwt)
-        const newLocalStorageJwt = UserModel.generateJWT(user)
-        const newCookieJwt = genCookiesJwt(newLocalStorageJwt)
-
-        ctx.res.setHeader("set-cookie", genSetCookies(newCookieJwt))
-        ctx.token = localStorageJwt
-        ctx.user = user
-        await next()
+        send(
+          "EXPIRED SESSION PLEASE LOGIN AGAIN",
+          { loginAgain: true },
+          HTTP_CODES.UNAUTHORIZED,
+        )
 
         return
       }

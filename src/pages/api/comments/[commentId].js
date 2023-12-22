@@ -1,6 +1,7 @@
+import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
-import { idValidator } from "@/utils/validator"
+import { commentValidator, idValidator } from "@/utils/validator"
 
 const handler = mw({
   GET: [
@@ -18,7 +19,7 @@ const handler = mw({
     }) => {
       const comment = await CommentModel.query()
         .findById(commentId)
-        .withGraphFetched("[user,post]")
+        .withGraphFetched("[user,post.user]")
         .throwIfNotFound()
 
       send(comment, { count: 1 })
@@ -30,9 +31,10 @@ const handler = mw({
         commentId: idValidator.required(),
       },
       body: {
-        content: idValidator.required(),
+        content: commentValidator.required(),
       },
     }),
+    auth(),
     async ({
       send,
       input: {
@@ -45,13 +47,14 @@ const handler = mw({
         .updateAndFetchById(commentId, {
           content,
         })
-        .withGraphFetched("[user,post]")
+        .withGraphFetched("[user,post.user]")
         .throwIfNotFound()
 
       send(updatedComment, { count: 1 })
     },
   ],
   DELETE: [
+    auth(),
     validate({
       query: {
         commentId: idValidator.required(),
@@ -66,12 +69,13 @@ const handler = mw({
     }) => {
       try {
         const deletedComment = await CommentModel.query()
-          .deleteByIdAndFetch(commentId)
-          .withGraphFetched("[user,post]")
+          .findById(commentId)
+          .withGraphFetched("[user,post.user]")
           .throwIfNotFound()
+
+        await CommentModel.query().deleteById(commentId)
         send(deletedComment, { count: 1 })
       } catch (error) {
-        console.log(error)
         send({ error }, { count: 0 })
       }
     },

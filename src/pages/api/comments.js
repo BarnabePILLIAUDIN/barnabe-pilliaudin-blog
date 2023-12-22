@@ -17,13 +17,7 @@ const handler = mw({
         token: tokenValidator.required(),
       },
     }),
-    async ({ next }) => {
-      await next()
-    },
     auth(),
-    async ({ next }) => {
-      await next()
-    },
     async ({
       send,
       user,
@@ -31,7 +25,6 @@ const handler = mw({
         body: { content, postId },
       },
       models: { CommentModel },
-      token,
     }) => {
       if (!user) {
         throw new HttpForbiddenError("You need to be logged to comment a post.")
@@ -42,10 +35,6 @@ const handler = mw({
         userId: user.id,
         postId,
       })
-
-      if (token) {
-        send(newComment, { count: 1 }, token)
-      }
 
       send(newComment, { count: 1 })
     },
