@@ -1,8 +1,8 @@
 import apiConfig from "@/api/apiConfig"
 import HttpAuthenticationError from "@/api/errors/HttpAuthenticationError"
 import HTTP_CODES from "@/api/httpCodes"
-import genCookiesJwt from "@/api/utils/genCookiesJWT"
-import genSetCookies from "@/api/utils/genSetCookies"
+import throwIfMissingCredentials from "@/api/utils/auth/throwIfMissingCredentials"
+import throwIfTokensDoesntMatch from "@/api/utils/auth/throwIfTokensDoesntMatch"
 import UserModel from "@/db/models/UserModel"
 import webConfig from "@/web/webConfig"
 import jsonwebtoken, {
@@ -24,9 +24,7 @@ const auth =
       send,
     } = ctx
 
-    if (!localStorageJwt && !cookieJwt && isRequired) {
-      throw new HttpAuthenticationError("Missing credentials.")
-    }
+    throwIfMissingCredentials(localStorageJwt, cookieJwt, isRequired)
 
     try {
       const {
@@ -37,11 +35,16 @@ const auth =
         apiConfig.security.jwt.secret,
       )
 
-      if (
-        localStorageJwt !==
-        extractedCookieToken[webConfig.security.session.cookie.key]
-      ) {
+      throwIfTokensDoesntMatch(localStorageJwt, extractedCookieToken)
+
+      const dbUser = await UserModel.query().findById(user.id)
+
+      if (!dbUser) {
         throw new HttpAuthenticationError("Invalid credentials.")
+      }
+
+      if (!dbUser.isActive) {
+        throw new HttpAuthenticationError("You have been banned from the blog")
       }
 
       ctx.user = user

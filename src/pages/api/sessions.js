@@ -7,6 +7,7 @@ import genSetCookies from "@/api/utils/genSetCookies"
 import webConfig from "@/web/webConfig"
 import ms from "ms"
 import genCookies from "@/api/utils/genCookies"
+import HttpForbiddenError from "@/api/errors/HttpForbidenError"
 
 const handler = mw({
   POST: [
@@ -28,6 +29,10 @@ const handler = mw({
 
       if (!user) {
         throw new HttpAuthenticationError("Invalid credentials.")
+      }
+
+      if (!user.isActive) {
+        throw new HttpForbiddenError("You have been banned from the blog")
       }
 
       const { hashedPassword: inputHashedPassword } =
