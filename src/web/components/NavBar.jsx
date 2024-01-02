@@ -11,12 +11,22 @@ const NavBar = () => {
         <h1 className="text-4xl font-extrabold">
           <Link href="/">Blog</Link>
         </h1>
-        <ul className="flex gap-5 text-xl font-bold">
+        <ul className="flex gap-5 text-xl font-bold items-center">
           {session ? (
             <>
               <li>
-                <Link href="/user">My account</Link>
+                <Link href="/my-account">My account</Link>
               </li>
+              {session.isAuthor && (
+                <li>
+                  <Link href="/post/create">Create a post</Link>
+                </li>
+              )}
+              {session.isAdmin && (
+                <li>
+                  <Link href="/admin">Dashboard</Link>
+                </li>
+              )}
               <li>
                 <Button onClick={signOut}>Sign out</Button>
               </li>
