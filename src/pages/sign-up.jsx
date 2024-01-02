@@ -103,7 +103,7 @@ const SignUp = () => {
       <div className="mt-7 flex justify-center">
         <Link
           href="/sign-in"
-          className="text-center underline font-semibold text-lg"
+          className="text-center underline font-semibold text-lg mx-10 pb-4"
         >
           Already have an account? Sign in
         </Link>
