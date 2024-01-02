@@ -1,7 +1,8 @@
-import HttpForbiddenError from "@/api/errors/HttpForbidenError"
+import HttpForbiddenError from "@/api/errors/HttpForbiddenError"
 import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
+import genSetCookies from "@/api/utils/genSetCookies"
 import {
   firstNameValidator,
   idValidator,
@@ -22,6 +23,7 @@ const handler = mw({
     auth(),
     async ({
       send,
+      res,
       input: {
         query: { userId },
         body,
@@ -39,8 +41,10 @@ const handler = mw({
           ...sanitizedBody,
         })
         .throwIfNotFound()
+      const token = UserModel.generateJWT(updatedUser)
+      res.setHeader("set-cookie", genSetCookies(token))
 
-      send(updatedUser)
+      send({ updatedUser, token })
     },
   ],
   DELETE: [

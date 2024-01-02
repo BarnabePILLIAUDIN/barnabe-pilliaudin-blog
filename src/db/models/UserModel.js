@@ -26,6 +26,7 @@ class UserModel extends BaseModel {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
+            isAuthor: user.isAuthor,
             isAdmin: user.isAdmin,
           },
         },

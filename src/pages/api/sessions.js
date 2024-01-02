@@ -7,7 +7,7 @@ import genSetCookies from "@/api/utils/genSetCookies"
 import webConfig from "@/web/webConfig"
 import ms from "ms"
 import genCookies from "@/api/utils/genCookies"
-import HttpForbiddenError from "@/api/errors/HttpForbidenError"
+import HttpForbiddenError from "@/api/errors/HttpForbiddenError"
 
 const handler = mw({
   POST: [

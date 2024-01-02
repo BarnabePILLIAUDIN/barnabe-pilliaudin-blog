@@ -1,4 +1,4 @@
-import HttpForbiddenError from "@/api/errors/HttpForbidenError"
+import HttpForbiddenError from "@/api/errors/HttpForbiddenError"
 import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"

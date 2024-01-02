@@ -1,42 +1,49 @@
+import webConfig from "@/web/webConfig"
+import axios from "axios"
+import jsonwebtoken from "jsonwebtoken"
 import {
   createContext,
-  useContext,
-  useState,
   useCallback,
+  useContext,
   useEffect,
+  useState,
 } from "react"
-import jsonwebtoken from "jsonwebtoken"
-import axios from "axios"
+
+const SessionContext = createContext()
 
 export const useSession = () => useContext(SessionContext)
-
 export const SessionContextProvider = (props) => {
-  const [session, setSession] = useState({})
+  const [session, setSession] = useState(null)
   const signIn = useCallback((jwt) => {
-    localStorage.setItem("token", jwt)
+    localStorage.setItem(webConfig.security.session.cookie.key, jwt)
+
     const { payload } = jsonwebtoken.decode(jwt)
+
     setSession(payload)
   }, [])
-  const signOut = useCallback(() => {
-    localStorage.removeItem("token")
-    axios.delete("/api/sessions")
-    setSession({})
+  const signOut = useCallback(async () => {
+    await axios.delete("/api/sessions")
+    localStorage.removeItem(webConfig.security.session.cookie.key)
+    setSession(null)
   }, [])
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
+    const jwt = localStorage.getItem(webConfig.security.session.cookie.key)
 
-    if (!token) {
+    if (!jwt) {
       return
     }
 
-    const { payload } = jsonwebtoken.decode(token)
-    setSession(payload)
+    const {
+      payload: { user },
+    } = jsonwebtoken.decode(jwt)
+
+    setSession(user)
   }, [])
 
   return (
     <SessionContext.Provider {...props} value={{ session, signIn, signOut }} />
   )
 }
-const SessionContext = createContext()
+
 export default SessionContext
