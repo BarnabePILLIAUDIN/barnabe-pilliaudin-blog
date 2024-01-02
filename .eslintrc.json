@@ -1,11 +1,6 @@
 {
   "root": true,
-  "extends": [
-    "eslint:recommended",
-    "prettier",
-    "next/core-web-vitals",
-    "plugin:react/recommended"
-  ],
+  "extends": ["eslint:recommended", "prettier", "plugin:react/recommended"],
   "plugins": ["react", "react-hooks"],
   "env": {
     "browser": true,
@@ -36,6 +31,7 @@
     "no-unmodified-loop-condition": "error",
     "no-unreachable-loop": "error",
     "no-unused-private-class-members": "error",
+    "require-atomic-updates": "error",
     "arrow-body-style": ["error", "as-needed"],
     "camelcase": [
       "error",
@@ -52,7 +48,7 @@
       { "ignoreConsecutiveComments": true }
     ],
     "class-methods-use-this": ["error", { "enforceForClassFields": true }],
-    "complexity": ["warn", 10],
+    "complexity": ["error", 10],
     "consistent-return": "error",
     "curly": ["error", "all"],
     "default-param-last": "error",
@@ -76,10 +72,10 @@
       { "max": 150, "skipBlankLines": true, "skipComments": true }
     ],
     "max-lines-per-function": [
-      "warn",
+      "error",
       { "max": 50, "skipBlankLines": true, "skipComments": true }
     ],
-    "max-nested-callbacks": ["error", 3],
+    "max-nested-callbacks": ["error", 4],
     "max-params": ["error", 3],
     "multiline-comment-style": ["error", "separate-lines"],
     "new-cap": "error",
@@ -125,7 +121,7 @@
     "no-underscore-dangle": ["error", { "allowFunctionParams": false }],
     "no-unneeded-ternary": ["error", { "defaultAssignment": false }],
     "no-unused-expressions": ["error", { "enforceForJSX": true }],
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-unused-vars": ["error", { "varsIgnorePattern": "_" }],
     "no-useless-call": "error",
     "no-useless-computed-key": ["error", { "enforceForClassMembers": true }],
     "no-useless-concat": "error",
@@ -224,18 +220,8 @@
     ],
     "space-before-blocks": "error",
     "semi": ["error", "never"],
-    // extra
-    "@next/next/no-html-link-for-pages": ["error", "./src/pages"],
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-    "react/no-unescaped-entities": [
-      "error",
-      {
-        "forbid": [">", "}"]
-      }
-    ],
-    "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off"
   },
   "settings": {
     "react": {
