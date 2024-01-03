@@ -2,11 +2,13 @@ import HttpForbiddenError from "@/api/errors/HttpForbiddenError"
 import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
+import sanitizeBody from "@/api/utils/auth/sanitizeBody"
 import genSetCookies from "@/api/utils/genSetCookies"
 import {
   firstNameValidator,
   idValidator,
   lastNameValidator,
+  tokenValidator,
 } from "@/utils/validator"
 
 const handler = mw({
@@ -35,7 +37,7 @@ const handler = mw({
         throw new HttpForbiddenError("You are not allowed to do that.")
       }
 
-      const { token: _token, ...sanitizedBody } = body
+      const sanitizedBody = sanitizeBody(body)
       const updatedUser = await UserModel.query()
         .updateAndFetchById(userId, {
           ...sanitizedBody,
@@ -49,10 +51,14 @@ const handler = mw({
   ],
   DELETE: [
     validate({
+      body: {
+        token: tokenValidator.required(),
+      },
       query: {
         userId: idValidator.required(),
       },
     }),
+    auth(true, { isAuthor: false, isAdmin: true }),
     async ({
       models: { UserModel },
       send,

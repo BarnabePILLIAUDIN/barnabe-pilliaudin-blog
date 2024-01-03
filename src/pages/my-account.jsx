@@ -1,12 +1,11 @@
 import { useSession } from "@/web/components/SessionContext"
+import UnloggedMyAccount from "@/web/components/my-account/UnloggedMyAccount"
 import Button from "@/web/components/ui/Button"
 import FormField from "@/web/components/ui/FormField"
 import updateUser from "@/web/services/updateUser"
 import webConfig from "@/web/webConfig"
 import { useMutation } from "@tanstack/react-query"
 import { Form, Formik } from "formik"
-import Link from "next/link"
-import { useCallback } from "react"
 
 const formFields = [
   {
@@ -29,41 +28,27 @@ const UserPage = () => {
     lastName: "",
     id: "",
   }
-  const { mutateAsync, isSuccess, isLoading } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: (values) => updateUser(id, values),
   })
-  const handleSubmit = async ({ firstName, lastName }) => {
+  const handleSubmit = async ({ newFirstName, newLastName }) => {
     const localStorageToken = localStorage.getItem(
       webConfig.security.session.cookie.key,
     )
-    console.log("local storage token", localStorageToken)
-    console.log(firstName, lastName)
     const {
       data: {
         result: [{ token }],
       },
     } = await mutateAsync({
-      firstName,
-      lastName,
+      newFirstName,
+      newLastName,
       token: localStorageToken,
     })
     signIn(token)
   }
 
   if (!user) {
-    return (
-      <div className="w-96 mx-auto flex flex-col text-center gap-3">
-        <h2 className="text-xl font-bold">
-          You need to sign in to see you account
-        </h2>
-        <Link href="/sign-in" className="underline text-lg font-medium">
-          Go to sign in
-        </Link>
-        <Link href="/sign-up" className="underline text-lg font-medium">
-          Go to sign up
-        </Link>
-      </div>
-    )
+    return <UnloggedMyAccount />
   }
 
   const initialValues = {
@@ -85,6 +70,7 @@ const UserPage = () => {
           </Form>
         </Formik>
       </div>
+      {user.isAuthor && <div>You are an author</div>}
     </>
   )
 }

@@ -1,4 +1,5 @@
 import HTTP_CODES from "@/api/httpCodes"
+import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
 
@@ -11,6 +12,7 @@ import {
 
 const handler = mw({
   GET: [
+    auth(true, { isAuthor: false, isAdmin: true }),
     async ({ models: { UserModel }, send }) => {
       const users = await UserModel.query()
       const sanitizedUsers = users.map(

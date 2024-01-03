@@ -25,6 +25,7 @@ const validate =
             abortEarly: false,
           },
         )
+
       ctx.input = sanitizedInput
 
       await next()

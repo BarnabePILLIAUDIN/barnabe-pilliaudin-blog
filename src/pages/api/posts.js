@@ -24,7 +24,7 @@ const handler = mw({
         token: tokenValidator.required(),
       },
     }),
-    auth(),
+    auth(true, { isAuthor: true, isAdmin: false }),
     async ({
       send,
       user,

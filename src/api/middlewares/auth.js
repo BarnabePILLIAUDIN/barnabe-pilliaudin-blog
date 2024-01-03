@@ -2,7 +2,9 @@ import apiConfig from "@/api/apiConfig"
 import HttpAuthenticationError from "@/api/errors/HttpAuthenticationError"
 import HTTP_CODES from "@/api/httpCodes"
 import throwIfMissingCredentials from "@/api/utils/auth/throwIfMissingCredentials"
+import throwIfNotAuthorized from "@/api/utils/auth/throwIfNotAuthorized"
 import throwIfTokensDoesntMatch from "@/api/utils/auth/throwIfTokensDoesntMatch"
+import sanitizeUser from "@/api/utils/sanitizeUser"
 import UserModel from "@/db/models/UserModel"
 import webConfig from "@/web/webConfig"
 import jsonwebtoken, {
@@ -11,7 +13,10 @@ import jsonwebtoken, {
 } from "jsonwebtoken"
 
 const auth =
-  (isRequired = true) =>
+  (
+    isRequired = true,
+    requiredAuthorisation = { isAdmin: false, isAuthor: false },
+  ) =>
   async (ctx) => {
     const {
       input: {
@@ -39,15 +44,9 @@ const auth =
 
       const dbUser = await UserModel.query().findById(user.id)
 
-      if (!dbUser) {
-        throw new HttpAuthenticationError("Invalid credentials.")
-      }
+      throwIfNotAuthorized(requiredAuthorisation, dbUser)
 
-      if (!dbUser.isActive) {
-        throw new HttpAuthenticationError("You have been banned from the blog")
-      }
-
-      ctx.user = user
+      ctx.user = sanitizeUser(dbUser)
     } catch (err) {
       if (err instanceof TokenExpiredError) {
         send(

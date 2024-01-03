@@ -1,6 +1,7 @@
 import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
+import sanitizeBody from "@/api/utils/auth/sanitizeBody"
 import sanitizePosts from "@/api/utils/sanitizePosts"
 import {
   contentValidator,
@@ -43,7 +44,7 @@ const handler = mw({
         token: tokenValidator,
       },
     }),
-    auth(),
+    auth(true, { isAuthor: true, isAdmin: false }),
     async ({
       send,
       input: {
@@ -52,7 +53,7 @@ const handler = mw({
       },
       models: { PostModel },
     }) => {
-      const { token: _token, ...sanitizedBody } = body
+      const sanitizedBody = sanitizeBody(body)
       const updatedPost = await PostModel.query()
         .updateAndFetchById(postId, {
           ...sanitizedBody,
@@ -69,6 +70,7 @@ const handler = mw({
         postId: idValidator.required(),
       },
     }),
+    auth(true, { isAuthor: true, isAdmin: false }),
     async ({
       models: { PostModel },
       send,
