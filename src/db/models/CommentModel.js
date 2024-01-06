@@ -1,5 +1,4 @@
 import BaseModel from "@/db/models/BaseModel"
-import PostModel from "@/db/models/PostModel"
 import UserModel from "@/db/models/UserModel"
 
 class CommentModel extends BaseModel {
@@ -8,18 +7,10 @@ class CommentModel extends BaseModel {
     return {
       user: {
         modelClass: UserModel,
-        relation: BaseModel.BelongsToOneRelation,
+        relation: BaseModel.HasOneRelation,
         join: {
-          from: "comments.userId",
-          to: "users.id",
-        },
-      },
-      post: {
-        modelClass: PostModel,
-        relation: BaseModel.BelongsToOneRelation,
-        join: {
-          from: "comments.postId",
-          to: "posts.id",
+          from: "users.id",
+          to: "comments.userId",
         },
       },
     }

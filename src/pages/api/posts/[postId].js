@@ -26,7 +26,7 @@ const handler = mw({
     }) => {
       const post = await PostModel.query()
         .findById(postId)
-        .withGraphFetched("[comments,user]")
+        .withGraphFetched("[comments.[user],user]")
         .throwIfNotFound()
       const sanitizedPost = sanitizePosts([post])
 
@@ -58,7 +58,7 @@ const handler = mw({
         .updateAndFetchById(postId, {
           ...sanitizedBody,
         })
-        .withGraphFetched("[comments,user]")
+        .withGraphFetched("[comments.[user],user]")
         .throwIfNotFound()
       const sanitizedPost = sanitizePosts([updatedPost])
       send(sanitizedPost, { count: 1 })

@@ -11,7 +11,9 @@ import {
 const handler = mw({
   GET: [
     async ({ send, models: { PostModel } }) => {
-      const posts = await PostModel.query().withGraphFetched("[comments,user]")
+      const posts = await PostModel.query().withGraphFetched(
+        "[comments.[user],user]",
+      )
       const sanitizedPosts = sanitizePosts(posts)
       send(sanitizedPosts, { count: posts.length })
     },
