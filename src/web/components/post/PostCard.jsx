@@ -1,4 +1,7 @@
-import { UserCircleIcon } from "@heroicons/react/24/outline"
+import {
+  ChatBubbleBottomCenterTextIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline"
 import clsx from "clsx"
 
 import Link from "next/link"
@@ -8,6 +11,7 @@ const PostCard = ({
     title,
     user: { firstName, lastName },
     id,
+    comments,
   },
   className,
   ...otherProps
@@ -19,11 +23,17 @@ const PostCard = ({
   >
     <article>
       <h3 className="text-xl font-bold">{title}</h3>
-      <div className="flex items-center gap-5 mt-2">
-        <UserCircleIcon width={50} height={50} />
-        <h4 className="text-lg font-medium">
-          {firstName} {lastName}
-        </h4>
+      <div className="flex items-center mt-2 justify-between mr‡-2">
+        <div className="flex items-center gap-5">
+          <UserCircleIcon width={50} height={50} />
+          <h4 className="text-lg font-medium">
+            {firstName} {lastName}
+          </h4>
+        </div>
+        <div className="flex items-center gap-2">
+          <h4 className="text-lg font-medium">{comments.length} </h4>
+          <ChatBubbleBottomCenterTextIcon width={30} height={30} />
+        </div>
       </div>
     </article>
   </Link>

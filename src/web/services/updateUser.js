@@ -1,7 +1,7 @@
-import axios from "axios"
+import request from "@/web/services/request"
 
 const updateUser = async (id, values) =>
-  await axios.patch(`http://localhost:3000/api/users/${id}`, {
+  await request(`users/${id}`, "PATCH", {
     ...values,
   })
 

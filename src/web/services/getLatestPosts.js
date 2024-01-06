@@ -1,6 +1,5 @@
-import axios from "axios"
+import request from "@/web/services/request"
 
-const getLatestPosts = async () =>
-  await axios.get("http://localhost:3000/api/posts")
+const getLatestPosts = async () => await request("posts")
 
 export default getLatestPosts

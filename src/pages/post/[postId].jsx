@@ -1,5 +1,9 @@
+import CommentCard from "@/web/components/comments/CommentCard"
 import getPostById from "@/web/services/getPostById"
-import { UserCircleIcon } from "@heroicons/react/24/outline"
+import {
+  ChatBubbleBottomCenterTextIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline"
 
 export const getServerSideProps = async ({ query: { postId } }) => {
   const {
@@ -19,6 +23,7 @@ const PostPage = ({
     title,
     content,
     user: { firstName, lastName },
+    comments,
   },
 }) => (
   <main className="pb-5 mt-8 mx-5">
@@ -31,6 +36,16 @@ const PostPage = ({
     </div>
     <section className="flex flex-col gap-5 mt-7 text-lg">
       <p>{content}</p>
+    </section>
+    <section className="mt-5">
+      <h3 className=" font-medium text-3xl">Comments</h3>
+      <div className="flex items-center gap-2">
+        <h4 className="text-md font-medium">{comments.length} </h4>
+        <ChatBubbleBottomCenterTextIcon width={20} height={20} />
+      </div>
+      {comments.map((comment) => (
+        <CommentCard key={`${comment.id}`} comment={comment} />
+      ))}
     </section>
   </main>
 )

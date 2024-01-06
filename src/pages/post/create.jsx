@@ -1,6 +1,7 @@
 import { contentValidator, titleValidator } from "@/utils/validator"
 import { useSession } from "@/web/components/SessionContext"
 import Button from "@/web/components/ui/Button"
+import ForbiddenMessage from "@/web/components/ui/ForbiddenMessage"
 import FormField from "@/web/components/ui/FormField"
 import webConfig from "@/web/webConfig"
 import axios from "axios"
@@ -33,7 +34,7 @@ const CreatePost = () => {
   const { session } = useSession()
 
   if (!session || !session.isAuthor) {
-    return <div>Not authorized</div>
+    return <ForbiddenMessage message="You are not allowed to create a post " />
   }
 
   const router = useRouter()

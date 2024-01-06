@@ -1,6 +1,9 @@
 import { ValidationError, boolean, object, string } from "yup"
 
 const validationSchema = object({
+  api: object({
+    url: string().required(),
+  }).noUnknown(),
   security: object({
     session: object({
       cookie: object({
@@ -15,6 +18,9 @@ let webConfig = null
 
 try {
   webConfig = validationSchema.validateSync({
+    api: {
+      url: process.env.NEXT_PUBLIC__API_URL,
+    },
     security: {
       session: {
         cookie: {
@@ -35,6 +41,7 @@ try {
       "\n\t",
     )}`.trim(),
   )
+
   process.exit(1)
 }
 

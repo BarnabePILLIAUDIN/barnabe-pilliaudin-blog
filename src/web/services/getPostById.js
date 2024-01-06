@@ -1,6 +1,5 @@
-import axios from "axios"
+import request from "@/web/services/request"
 
-const getPostById = async (id) =>
-  await axios.get(`http://localhost:3000/api/posts/${id}`)
+const getPostById = async (id) => await request(`posts/${id}`)
 
 export default getPostById
