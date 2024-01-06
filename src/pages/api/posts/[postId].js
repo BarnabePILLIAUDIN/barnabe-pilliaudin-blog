@@ -41,7 +41,7 @@ const handler = mw({
       body: {
         title: titleValidator,
         content: contentValidator,
-        token: tokenValidator,
+        token: tokenValidator.required(),
       },
     }),
     auth(true, { isAuthor: true, isAdmin: false }),
@@ -69,6 +69,9 @@ const handler = mw({
       query: {
         postId: idValidator.required(),
       },
+      body: {
+        token: tokenValidator.required(),
+      },
     }),
     auth(true, { isAuthor: true, isAdmin: false }),
     async ({
@@ -78,10 +81,10 @@ const handler = mw({
         query: { postId },
       },
     }) => {
-      const deletedUser = await PostModel.query()
+      const deletedPost = await PostModel.query()
         .deleteById(postId)
         .throwIfNotFound()
-      send(deletedUser)
+      send(deletedPost)
     },
   ],
 })

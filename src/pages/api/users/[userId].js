@@ -4,6 +4,7 @@ import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
 import sanitizeBody from "@/api/utils/auth/sanitizeBody"
 import genSetCookies from "@/api/utils/genSetCookies"
+import sanitizeUser from "@/api/utils/sanitizeUser"
 import {
   firstNameValidator,
   idValidator,
@@ -46,7 +47,7 @@ const handler = mw({
       const token = UserModel.generateJWT(updatedUser)
       res.setHeader("set-cookie", genSetCookies(token))
 
-      send({ updatedUser, token })
+      send({ updatedUser: sanitizeUser(updatedUser), token })
     },
   ],
   DELETE: [
@@ -69,7 +70,7 @@ const handler = mw({
       const deletedUser = await UserModel.query()
         .deleteById(userId)
         .throwIfNotFound()
-      send(deletedUser)
+      send(sanitizeUser(deletedUser))
     },
   ],
 })

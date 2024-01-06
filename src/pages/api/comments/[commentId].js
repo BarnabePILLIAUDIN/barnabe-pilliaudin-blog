@@ -1,7 +1,13 @@
+import HTTP_CODES from "@/api/httpCodes"
 import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
-import { commentValidator, idValidator } from "@/utils/validator"
+import sanitizeComment from "@/api/utils/sanitizeComment"
+import {
+  commentValidator,
+  idValidator,
+  tokenValidator,
+} from "@/utils/validator"
 
 const handler = mw({
   GET: [
@@ -19,10 +25,10 @@ const handler = mw({
     }) => {
       const comment = await CommentModel.query()
         .findById(commentId)
-        .withGraphFetched("[user,post.user]")
+        .withGraphFetched("[user,post.[user]]")
         .throwIfNotFound()
 
-      send(comment, { count: 1 })
+      send(sanitizeComment(comment), { count: 1 })
     },
   ],
   PATCH: [
@@ -32,9 +38,10 @@ const handler = mw({
       },
       body: {
         content: commentValidator.required(),
+        token: tokenValidator.required(),
       },
     }),
-    auth(),
+    auth(true, { isAuthor: false, isAdmin: true }),
     async ({
       send,
       input: {
@@ -50,22 +57,26 @@ const handler = mw({
         .withGraphFetched("[user,post.user]")
         .throwIfNotFound()
 
-      send(updatedComment, { count: 1 })
+      send(sanitizeComment(updatedComment), { count: 1 })
     },
   ],
   DELETE: [
-    auth(),
     validate({
       query: {
         commentId: idValidator.required(),
       },
+      body: {
+        token: tokenValidator.required(),
+      },
     }),
+    auth(true, { isAuthor: true, isAdmin: false }),
     async ({
       send,
       input: {
         query: { commentId },
       },
       models: { CommentModel },
+      res,
     }) => {
       try {
         const deletedComment = await CommentModel.query()
@@ -74,9 +85,9 @@ const handler = mw({
           .throwIfNotFound()
 
         await CommentModel.query().deleteById(commentId)
-        send(deletedComment, { count: 1 })
+        send(sanitizeComment(deletedComment), { count: 1 })
       } catch (error) {
-        send({ error }, { count: 0 })
+        res.status(HTTP_CODES.NOT_FOUND).send("Comment not found")
       }
     },
   ],

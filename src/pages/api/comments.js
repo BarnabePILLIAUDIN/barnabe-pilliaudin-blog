@@ -2,6 +2,7 @@ import HttpForbiddenError from "@/api/errors/HttpForbiddenError"
 import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
+import sanitizeComment from "@/api/utils/sanitizeComment"
 import {
   commentValidator,
   idValidator,
@@ -30,13 +31,15 @@ const handler = mw({
         throw new HttpForbiddenError("You need to be logged to comment a post.")
       }
 
-      const newComment = await CommentModel.query().insertAndFetch({
-        content,
-        userId: user.id,
-        postId,
-      })
+      const newComment = await CommentModel.query()
+        .insertAndFetch({
+          content,
+          userId: user.id,
+          postId,
+        })
+        .withGraphFetched("[user,post.[user]]")
 
-      send(newComment, { count: 1 })
+      send(sanitizeComment(newComment), { count: 1 })
     },
   ],
 })

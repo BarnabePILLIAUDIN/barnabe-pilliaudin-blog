@@ -1,10 +1,5 @@
-const sanitizePosts = (posts) =>
-  posts.map(
-    ({
-      userId: _userId,
-      user: { hashedPassword: _hashedPassword, salt: _salt, ...sanitizedUser },
-      ...sanitizedPost
-    }) => ({ ...sanitizedPost, user: sanitizedUser }),
-  )
+import sanitizePost from "@/api/utils/sanitizePost"
+
+const sanitizePosts = (posts) => posts.map((post) => sanitizePost(post))
 
 export default sanitizePosts
