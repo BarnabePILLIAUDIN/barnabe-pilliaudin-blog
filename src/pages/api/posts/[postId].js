@@ -2,7 +2,7 @@ import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
 import sanitizeBody from "@/api/utils/auth/sanitizeBody"
-import sanitizePosts from "@/api/utils/sanitizePosts"
+import sanitizePost from "@/api/utils/sanitizePost"
 import {
   contentValidator,
   idValidator,
@@ -28,7 +28,7 @@ const handler = mw({
         .findById(postId)
         .withGraphFetched("[comments.[user],user]")
         .throwIfNotFound()
-      const sanitizedPost = sanitizePosts([post])
+      const sanitizedPost = sanitizePost(post)
 
       send(sanitizedPost, { count: 1 })
     },
@@ -60,7 +60,7 @@ const handler = mw({
         })
         .withGraphFetched("[comments.[user],user]")
         .throwIfNotFound()
-      const sanitizedPost = sanitizePosts([updatedPost])
+      const sanitizedPost = sanitizePost(updatedPost)
       send(sanitizedPost, { count: 1 })
     },
   ],

@@ -31,7 +31,7 @@ const UserPage = () => {
   const { mutateAsync } = useMutation({
     mutationFn: (values) => updateUser(id, values),
   })
-  const handleSubmit = async ({ newFirstName, newLastName }) => {
+  const handleSubmit = async ({ firstName: newFirst, lastName: newLast }) => {
     const localStorageToken = localStorage.getItem(
       webConfig.security.session.cookie.key,
     )
@@ -40,8 +40,8 @@ const UserPage = () => {
         result: [{ token }],
       },
     } = await mutateAsync({
-      newFirstName,
-      newLastName,
+      firstName: newFirst,
+      lastName: newLast,
       token: localStorageToken,
     })
     signIn(token)
@@ -55,6 +55,7 @@ const UserPage = () => {
     firstName,
     lastName,
   }
+
 
   return (
     <>
@@ -70,7 +71,6 @@ const UserPage = () => {
           </Form>
         </Formik>
       </div>
-      {user.isAuthor && <div>You are an author</div>}
     </>
   )
 }
