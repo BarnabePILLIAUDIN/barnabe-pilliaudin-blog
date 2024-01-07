@@ -1,6 +1,7 @@
 import HTTP_CODES from "@/api/httpCodes"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
+import sanitizeUsers from "@/api/utils/sanitizeUsers"
 
 import {
   emailValidator,
@@ -13,12 +14,8 @@ const handler = mw({
   GET: [
     async ({ models: { UserModel }, send }) => {
       const users = await UserModel.query()
-      const sanitizedUsers = users.map(
-        ({ hashedPassword: _password, salt: _salt, ...sanitizedUser }) =>
-          sanitizedUser,
-      )
 
-      send(sanitizedUsers, { count: sanitizedUsers.length })
+      send(sanitizeUsers(users), { count: users.length })
     },
   ],
   POST: [
