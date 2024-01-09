@@ -1,4 +1,4 @@
-import { emailValidator, passwordValidator } from "@/utils/validator"
+import { emailValidator, passwordValidator } from "@/utils/validators"
 import { useSession } from "@/web/components/SessionContext"
 import Button from "@/web/components/ui/Button"
 import FormField from "@/web/components/ui/FormField"

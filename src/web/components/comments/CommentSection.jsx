@@ -1,4 +1,4 @@
-import { commentValidator } from "@/utils/validator"
+import { commentValidator } from "@/utils/validators"
 import CommentCard from "@/web/components/comments/CommentCard"
 import Button from "@/web/components/ui/Button"
 import FormField from "@/web/components/ui/FormField"

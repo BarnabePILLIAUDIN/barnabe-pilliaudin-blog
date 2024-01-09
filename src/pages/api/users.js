@@ -7,15 +7,28 @@ import {
   emailValidator,
   firstNameValidator,
   lastNameValidator,
+  pageValidator,
   passwordValidator,
-} from "@/utils/validator"
+} from "@/utils/validators"
 
 const handler = mw({
   GET: [
-    async ({ models: { UserModel }, send }) => {
-      const users = await UserModel.query()
-
-      send(sanitizeUsers(users), { count: users.length })
+    validate({
+      query: {
+        page: pageValidator.required(),
+      },
+    }),
+    async ({
+      models: { UserModel },
+      send,
+      input: {
+        query: { page },
+      },
+    }) => {
+      const query = UserModel.query()
+      const users = await query.clone().page(page)
+      const [{ count }] = await query.clone().count()
+      send(sanitizeUsers(users), { count })
     },
   ],
   POST: [

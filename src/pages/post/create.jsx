@@ -1,4 +1,4 @@
-import { contentValidator, titleValidator } from "@/utils/validator"
+import { contentValidator, titleValidator } from "@/utils/validators"
 import { useSession } from "@/web/components/SessionContext"
 import Button from "@/web/components/ui/Button"
 import ForbiddenMessage from "@/web/components/ui/ForbiddenMessage"

@@ -7,7 +7,7 @@ import {
   contentValidator,
   idValidator,
   titleValidator,
-} from "@/utils/validator"
+} from "@/utils/validators"
 
 const handler = mw({
   GET: [

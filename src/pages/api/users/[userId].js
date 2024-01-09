@@ -9,7 +9,7 @@ import {
   firstNameValidator,
   idValidator,
   lastNameValidator,
-} from "@/utils/validator"
+} from "@/utils/validators"
 
 const handler = mw({
   PATCH: [

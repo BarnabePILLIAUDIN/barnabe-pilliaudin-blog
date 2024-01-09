@@ -1,6 +1,6 @@
 import mw from "@/api/mw"
 import validate from "@/api/middlewares/validate"
-import { emailValidator, passwordValidator } from "@/utils/validator"
+import { emailValidator, passwordValidator } from "@/utils/validators"
 import HttpAuthenticationError from "@/api/errors/HttpAuthenticationError"
 import genCookiesJwt from "@/api/utils/genCookiesJWT"
 import genSetCookies from "@/api/utils/genSetCookies"

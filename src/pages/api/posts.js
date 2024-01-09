@@ -3,16 +3,35 @@ import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
 import sanitizePost from "@/api/utils/sanitizePost"
 import sanitizePosts from "@/api/utils/sanitizePosts"
-import { titleValidator, contentValidator } from "@/utils/validator"
+import {
+  titleValidator,
+  contentValidator,
+  pageValidator,
+} from "@/utils/validators"
 
 const handler = mw({
   GET: [
-    async ({ send, models: { PostModel } }) => {
-      const posts = await PostModel.query()
+    validate({
+      query: {
+        page: pageValidator.required(),
+      },
+    }),
+    async ({
+      send,
+      models: { PostModel },
+      input: {
+        query: { page },
+      },
+    }) => {
+      const query = PostModel.query()
+      const posts = await query
+        .clone()
         .withGraphFetched("[comments.[user],user]")
         .orderBy("created_at", "desc")
+        .page(page)
+      const [{ count }] = await query.clone().count()
 
-      send(sanitizePosts(posts), { count: posts.length })
+      send(sanitizePosts(posts), { count })
     },
   ],
   POST: [

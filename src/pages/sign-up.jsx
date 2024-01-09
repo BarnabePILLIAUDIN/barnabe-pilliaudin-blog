@@ -3,7 +3,7 @@ import {
   firstNameValidator,
   lastNameValidator,
   passwordValidator,
-} from "@/utils/validator"
+} from "@/utils/validators"
 import Alert from "@/web/components/ui/Alert"
 import Button from "@/web/components/ui/Button"
 import FormField from "@/web/components/ui/FormField"

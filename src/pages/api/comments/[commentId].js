@@ -3,7 +3,7 @@ import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
 import sanitizeComment from "@/api/utils/sanitizeComment"
-import { commentValidator, idValidator } from "@/utils/validator"
+import { commentValidator, idValidator } from "@/utils/validators"
 
 const handler = mw({
   GET: [
