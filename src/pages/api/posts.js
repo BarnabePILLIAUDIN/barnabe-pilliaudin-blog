@@ -3,11 +3,7 @@ import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
 import sanitizePost from "@/api/utils/sanitizePost"
 import sanitizePosts from "@/api/utils/sanitizePosts"
-import {
-  titleValidator,
-  contentValidator,
-  tokenValidator,
-} from "@/utils/validator"
+import { titleValidator, contentValidator } from "@/utils/validator"
 
 const handler = mw({
   GET: [
@@ -24,7 +20,6 @@ const handler = mw({
       body: {
         title: titleValidator.required(),
         content: contentValidator.required(),
-        token: tokenValidator.required(),
       },
     }),
     auth(true, { isAuthor: true, isAdmin: false }),
@@ -44,6 +39,8 @@ const handler = mw({
         })
         .withGraphFetched("user")
 
+      // Avoid error in sanitizer
+      newPost.comments = []
       send(sanitizePost(newPost), { count: 1 })
     },
   ],

@@ -9,7 +9,6 @@ import {
   firstNameValidator,
   idValidator,
   lastNameValidator,
-  tokenValidator,
 } from "@/utils/validator"
 
 const handler = mw({
@@ -52,9 +51,6 @@ const handler = mw({
   ],
   DELETE: [
     validate({
-      body: {
-        token: tokenValidator.required(),
-      },
       query: {
         userId: idValidator.required(),
       },

@@ -3,11 +3,7 @@ import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
 import sanitizeComment from "@/api/utils/sanitizeComment"
-import {
-  commentValidator,
-  idValidator,
-  tokenValidator,
-} from "@/utils/validator"
+import { commentValidator, idValidator } from "@/utils/validator"
 
 const handler = mw({
   GET: [
@@ -38,7 +34,6 @@ const handler = mw({
       },
       body: {
         content: commentValidator.required(),
-        token: tokenValidator.required(),
       },
     }),
     auth(true, { isAuthor: false, isAdmin: true }),
@@ -64,9 +59,6 @@ const handler = mw({
     validate({
       query: {
         commentId: idValidator.required(),
-      },
-      body: {
-        token: tokenValidator.required(),
       },
     }),
     auth(true, { isAuthor: true, isAdmin: false }),

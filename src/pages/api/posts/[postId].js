@@ -7,7 +7,6 @@ import {
   contentValidator,
   idValidator,
   titleValidator,
-  tokenValidator,
 } from "@/utils/validator"
 
 const handler = mw({
@@ -41,7 +40,6 @@ const handler = mw({
       body: {
         title: titleValidator,
         content: contentValidator,
-        token: tokenValidator.required(),
       },
     }),
     auth(true, { isAuthor: true, isAdmin: false }),
@@ -68,9 +66,6 @@ const handler = mw({
     validate({
       query: {
         postId: idValidator.required(),
-      },
-      body: {
-        token: tokenValidator.required(),
       },
     }),
     auth(true, { isAuthor: true, isAdmin: false }),

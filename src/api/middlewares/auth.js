@@ -19,28 +19,26 @@ const auth =
   ) =>
   async (ctx) => {
     const {
-      input: {
-        body: { token: localStorageJwt },
-      },
       req: {
         cookies: { [webConfig.security.session.cookie.key]: cookieJwt },
+        headers: { authorization },
       },
       next,
       send,
     } = ctx
 
-    throwIfMissingCredentials(localStorageJwt, cookieJwt, isRequired)
+    throwIfMissingCredentials(authorization, cookieJwt, isRequired)
 
     try {
       const {
         payload: { user },
-      } = jsonwebtoken.verify(localStorageJwt, apiConfig.security.jwt.secret)
+      } = jsonwebtoken.verify(authorization, apiConfig.security.jwt.secret)
       const { token: extractedCookieToken } = jsonwebtoken.verify(
         cookieJwt,
         apiConfig.security.jwt.secret,
       )
 
-      throwIfTokensDoesntMatch(localStorageJwt, extractedCookieToken)
+      throwIfTokensDoesntMatch(authorization, extractedCookieToken)
 
       const dbUser = await UserModel.query().findById(user.id)
 
