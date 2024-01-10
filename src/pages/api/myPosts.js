@@ -3,6 +3,7 @@ import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 
 import mw from "@/api/mw"
+import sanitizePosts from "@/api/utils/sanitizePosts"
 import { pageValidator } from "@/utils/validators"
 
 const handler = mw({
@@ -40,7 +41,7 @@ const handler = mw({
         .where("userId", user.id)
         .count()
 
-      send(posts, { PostCount, CommentCount })
+      send(sanitizePosts(posts), { PostCount, CommentCount })
     },
   ],
 })

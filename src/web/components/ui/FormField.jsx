@@ -22,7 +22,9 @@ const FormField = (props) => {
         name={name}
         {...field}
         {...otherProps}
-        className={clsx("rounded-md", { "border-red-600": hasError })}
+        className={clsx("rounded-md border-2 border-black", {
+          "border-red-600": hasError,
+        })}
       />
       {hasError && <span className="text-sm text-red-500">{error}</span>}
       {children && <Alert>{children}</Alert>}

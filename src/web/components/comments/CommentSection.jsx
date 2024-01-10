@@ -1,37 +1,13 @@
-import { commentValidator } from "@/utils/validators"
 import CommentCard from "@/web/components/comments/CommentCard"
-import Button from "@/web/components/ui/Button"
-import FormField from "@/web/components/ui/FormField"
-import addComment from "@/web/services/addComment"
-import webConfig from "@/web/webConfig"
 import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline"
-import { useMutation } from "@tanstack/react-query"
-import { Form, Formik } from "formik"
-import { object } from "yup"
+import { useCallback, useState } from "react"
+import AddCommentForm from "./AddCommentForm"
 
-const initialValues = {
-  content: "",
-}
-const validationSchema = object({
-  content: commentValidator.required("A comment can't be empty"),
-})
 const CommentSection = ({ comments, postId }) => {
-  const { mutateAsync } = useMutation({
-    mutationFn: (content) =>
-      addComment(
-        postId,
-        localStorage.getItem(webConfig.security.session.cookie.key),
-        content,
-      ),
+  const [maxComments, setMaxComments] = useState(5)
+  const seeMoreComments = useCallback(() => {
+    setMaxComments(maxComments + 5)
   })
-  const handleSubmit = async ({ content }) => {
-    const {
-      data: {
-        result: [comment],
-      },
-    } = await mutateAsync(content)
-    comments.unshift(comment)
-  }
 
   return (
     <section className="mt-5">
@@ -40,27 +16,19 @@ const CommentSection = ({ comments, postId }) => {
         <h4 className="text-md font-medium">{comments.length} </h4>
         <ChatBubbleBottomCenterTextIcon width={20} height={20} />
       </div>
-      <div>
-        <Formik
-          initialValues={initialValues}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-        >
-          <Form className="mt-3">
-            <FormField
-              name="content"
-              placeholder="Content"
-              label="Left a comment"
-            />
-            <Button type="submit" variant="primary" className="mt-3">
-              Add a comment
-            </Button>
-          </Form>
-        </Formik>
-      </div>
-      {comments.map((comment) => (
-        <CommentCard key={`${comment.id}`} comment={comment} />
-      ))}
+      <AddCommentForm postId={postId} />
+      {comments
+        .slice(
+          maxComments < comments.length - 1 ? comments.length - maxComments : 0,
+        )
+        .map((comment) => (
+          <CommentCard key={`${comment.id}`} comment={comment} />
+        ))}
+      {maxComments < comments.length && (
+        <button className="underline" onClick={seeMoreComments}>
+          See more comments
+        </button>
+      )}
     </section>
   )
 }

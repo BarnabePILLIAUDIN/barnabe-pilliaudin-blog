@@ -43,7 +43,6 @@ const auth =
       const dbUser = await UserModel.query().findById(user.id)
 
       throwIfNotAuthorized(requiredAuthorisation, dbUser)
-
       ctx.user = sanitizeUser(dbUser)
     } catch (err) {
       if (err instanceof TokenExpiredError) {

@@ -56,7 +56,6 @@ const UserPage = () => {
     lastName,
   }
 
-
   return (
     <>
       <h2 className="text-3xl font-bold mx-4">Hello {firstName}</h2>
