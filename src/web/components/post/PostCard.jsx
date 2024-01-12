@@ -1,5 +1,6 @@
 import {
   ChatBubbleBottomCenterTextIcon,
+  EyeIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline"
 import clsx from "clsx"
@@ -12,6 +13,7 @@ const PostCard = ({
     user: { firstName, lastName },
     id,
     comments,
+    views,
   },
   className,
   ...otherProps
@@ -30,9 +32,15 @@ const PostCard = ({
             {firstName} {lastName}
           </h4>
         </div>
-        <div className="flex items-center gap-2">
-          <h4 className="text-lg font-medium">{comments.length} </h4>
-          <ChatBubbleBottomCenterTextIcon width={30} height={30} />
+        <div className="flex gap-6 items-center">
+          <div className="flex items-center gap-2">
+            <h4 className="text-lg font-medium">{comments.length} </h4>
+            <ChatBubbleBottomCenterTextIcon width={30} height={30} />
+          </div>
+          <div className="flex items-center gap-2">
+            <h4 className="text-lg font-medium">{views} </h4>
+            <EyeIcon width={30} height={30} />
+          </div>
         </div>
       </div>
     </article>

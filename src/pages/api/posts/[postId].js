@@ -23,10 +23,18 @@ const handler = mw({
       },
       models: { PostModel },
     }) => {
-      const post = await PostModel.query()
+      const query = PostModel.query()
+      const post = await query
+        .clone()
         .findById(postId)
         .withGraphFetched("[comments.[user],user]")
         .throwIfNotFound()
+
+      post.views = Number.parseInt(post.views, 10) + 1
+      await query
+        .clone()
+        .where("id", "=", post.id)
+        .update({ views: post.views })
       const sanitizedPost = sanitizePost(post)
 
       send(sanitizedPost, { count: 1 })

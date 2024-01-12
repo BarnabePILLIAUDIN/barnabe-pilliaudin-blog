@@ -1,6 +1,6 @@
 import CommentSection from "@/web/components/comments/CommentSection"
 import getPostById from "@/web/services/getPostById"
-import { UserCircleIcon } from "@heroicons/react/24/outline"
+import { EyeIcon, UserCircleIcon } from "@heroicons/react/24/outline"
 
 export const getServerSideProps = async ({ query: { postId } }) => {
   const {
@@ -22,6 +22,7 @@ const PostPage = ({
     content,
     user: { firstName, lastName },
     comments,
+    views,
   },
 }) => (
   <main className="pb-5 mt-8 mx-5 px-5">
@@ -37,6 +38,10 @@ const PostPage = ({
     <section className="flex flex-col gap-5 mt-7 text-lg">
       <p>{content}</p>
     </section>
+    <div className="flex gap-2 items-center mt-5">
+      <EyeIcon width={30} height={30} />
+      <p className="font-semibold">{views}</p>
+    </div>
     <CommentSection comments={comments} postId={id} />
   </main>
 )
