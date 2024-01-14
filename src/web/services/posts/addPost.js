@@ -1,4 +1,4 @@
-import request from "./request"
+import request from "../request"
 
 const addPost = async (title, content, token) =>
   await request(`posts`, "POST", {

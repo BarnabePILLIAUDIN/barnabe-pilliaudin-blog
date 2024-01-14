@@ -1,10 +1,8 @@
 import { useSession } from "@/web/components/SessionContext"
 import ForbiddenMessage from "@/web/components/ui/ForbiddenMessage"
-import getUsers from "@/web/services/getUsers"
 
 const Dashboard = () => {
   const { session } = useSession()
-  const users = getUsers(localStorage.getItem("token"))
 
   if (!session || !session.isAdmin) {
     return (

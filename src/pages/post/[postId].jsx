@@ -1,5 +1,5 @@
 import CommentSection from "@/web/components/comments/CommentSection"
-import getPostById from "@/web/services/getPostById"
+import getPostById from "@/web/services/posts/getPostById"
 import { EyeIcon, UserCircleIcon } from "@heroicons/react/24/outline"
 
 export const getServerSideProps = async ({ query: { postId } }) => {

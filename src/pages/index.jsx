@@ -1,7 +1,7 @@
 import { pageValidator } from "@/utils/validators"
 import PostCard from "@/web/components/post/PostCard"
 import Pagination from "@/web/components/ui/Pagination"
-import getPosts from "@/web/services/getPosts"
+import getPosts from "@/web/services/posts/getPosts"
 
 export const getServerSideProps = async ({ query: { page } }) => {
   const sanitizedPage = page ?? 1

@@ -1,8 +1,9 @@
 import { useSession } from "@/web/components/SessionContext"
 import UnloggedMyAccount from "@/web/components/my-account/UnloggedMyAccount"
+import MyStats from "@/web/components/my-account/MyStats"
 import Button from "@/web/components/ui/Button"
 import FormField from "@/web/components/ui/FormField"
-import updateUser from "@/web/services/updateUser"
+import updateUser from "@/web/services/users/updateUser"
 import webConfig from "@/web/webConfig"
 import { useMutation } from "@tanstack/react-query"
 import { Form, Formik } from "formik"
@@ -58,11 +59,11 @@ const UserPage = () => {
 
   return (
     <>
-      <h2 className="text-3xl font-bold mx-4">Hello {firstName}</h2>
+      <h2 className="text-3xl font-bold mx-4 text-center">Hello {firstName}</h2>
       <div className="w-96 mx-auto mt-7">
-        <h3 className="text-center font-bold text-2xl mb-5">Modify my infos</h3>
+        <h3 className="text-center font-bold text-2xl">Modify your info</h3>
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-          <Form className="w-96 mx-auto flex flex-col gap-5">
+          <Form className="w-96 mx-auto flex flex-col gap-5 mt-5">
             {formFields.map((field) => (
               <FormField key={field.name} {...field} />
             ))}
@@ -70,6 +71,7 @@ const UserPage = () => {
           </Form>
         </Formik>
       </div>
+      <MyStats className="mt-5" />
     </>
   )
 }
