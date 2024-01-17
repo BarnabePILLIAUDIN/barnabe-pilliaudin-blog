@@ -4,9 +4,9 @@ import mw from "@/api/mw"
 import sanitizePost from "@/api/utils/sanitizePost"
 import sanitizePosts from "@/api/utils/sanitizePosts"
 import {
-  titleValidator,
   contentValidator,
   pageValidator,
+  titleValidator,
 } from "@/utils/validators"
 
 const handler = mw({

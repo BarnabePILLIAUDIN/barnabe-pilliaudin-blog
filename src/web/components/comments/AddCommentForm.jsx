@@ -19,14 +19,20 @@ const addCommentForm = ({ postId, ...otherProps }) => {
   const { mutateAsync } = useMutation({
     mutationFn: (content) =>
       addComment(
-        postId,
-        localStorage.getItem(webConfig.security.session.cookie.key),
-        content,
+        [
+          postId,
+          localStorage.getItem(webConfig.security.session.cookie.key),
+          content,
+        ],
+        router,
       ),
   })
   const handleSubmit = async ({ content }) => {
-    await mutateAsync(content)
-    router.push(`/post/${postId}`)
+    const result = await mutateAsync(content)
+
+    if (!result.meta.loginAgain) {
+      router.push(`/post/${postId}`)
+    }
   }
 
   return (

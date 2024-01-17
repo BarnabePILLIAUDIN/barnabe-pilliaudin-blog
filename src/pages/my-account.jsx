@@ -7,6 +7,7 @@ import updateUser from "@/web/services/users/updateUser"
 import webConfig from "@/web/webConfig"
 import { useMutation } from "@tanstack/react-query"
 import { Form, Formik } from "formik"
+import { useRouter } from "next/router"
 
 const formFields = [
   {
@@ -24,13 +25,14 @@ const formFields = [
 ]
 const UserPage = () => {
   const { session: user, signIn } = useSession()
+  const router = useRouter()
   const { firstName, lastName, id } = user ?? {
     firstName: "",
     lastName: "",
     id: "",
   }
   const { mutateAsync } = useMutation({
-    mutationFn: (values) => updateUser(id, values),
+    mutationFn: (values) => updateUser(id, values, router),
   })
   const handleSubmit = async ({ firstName: newFirst, lastName: newLast }) => {
     const localStorageToken = localStorage.getItem(
@@ -52,10 +54,7 @@ const UserPage = () => {
     return <UnloggedMyAccount />
   }
 
-  const initialValues = {
-    firstName,
-    lastName,
-  }
+  const initialValues = { firstName, lastName }
 
   return (
     <>

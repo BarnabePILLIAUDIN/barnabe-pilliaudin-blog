@@ -1,6 +1,11 @@
 import { useSession } from "@/web/components/SessionContext"
 import ForbiddenMessage from "@/web/components/ui/ForbiddenMessage"
 
+export const getServersideProps = ({ query: { page } }) => ({
+  props: {
+    page: page ?? 1,
+  },
+})
 const Dashboard = () => {
   const { session } = useSession()
 

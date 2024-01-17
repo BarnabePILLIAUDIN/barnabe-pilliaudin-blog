@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import { object } from "yup"
+
 const initialValues = {
   title: "",
   content: "",
@@ -43,14 +44,20 @@ const CreatePost = () => {
   const { mutateAsync } = useMutation({
     mutationFn: ({ title, content }) =>
       addPost(
-        title,
-        content,
-        localStorage.getItem(webConfig.security.session.cookie.key),
+        [
+          title,
+          content,
+          localStorage.getItem(webConfig.security.session.cookie.key),
+        ],
+        router,
       ),
   })
   const handleSubmit = async (values) => {
-    await mutateAsync(values)
-    router.push("/")
+    const result = await mutateAsync(values)
+
+    if (!result.meta.loginAgain) {
+      router.push("/")
+    }
   }
 
   return (

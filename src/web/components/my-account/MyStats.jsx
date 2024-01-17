@@ -8,8 +8,10 @@ import {
   EyeIcon,
 } from "@heroicons/react/24/outline"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/router"
 
 const MyStats = ({ ...props }) => {
+  const router = useRouter()
   const [myStats, setMyStats] = useState({
     posts: [],
     postCount: 0,
@@ -18,14 +20,18 @@ const MyStats = ({ ...props }) => {
   const { session: user } = useSession()
   useEffect(() => {
     const token = localStorage.getItem(webConfig.security.session.cookie.key)
+
     ;(async () => {
-      const result = await getUserStats(token)
-      const {
-        data: {
-          result: [{ postCount, commentCount, postViews }],
-        },
-      } = result
-      setMyStats({ postCount, commentCount, postViews })
+      const result = await getUserStats(token, router)
+
+      if (result.data) {
+        const {
+          data: {
+            result: [{ postCount, commentCount, postViews }],
+          },
+        } = result
+        setMyStats({ postCount, commentCount, postViews })
+      }
     })()
   }, [])
 

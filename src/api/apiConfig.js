@@ -1,4 +1,4 @@
-import { ValidationError, object, string } from "yup"
+import { object, string, ValidationError } from "yup"
 import knexfile from "../../knexfile.mjs"
 
 const validationSchema = object({
