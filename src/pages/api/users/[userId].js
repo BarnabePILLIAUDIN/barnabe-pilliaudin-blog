@@ -33,20 +33,34 @@ const handler = mw({
       user,
       models: { UserModel },
     }) => {
-      if (user.id !== userId) {
+      if (user.id !== userId && !user.isAdmin) {
         throw new HttpForbiddenError("You are not allowed to do that.")
       }
 
-      const sanitizedBody = sanitizeBody(body)
+      // The requests from admin dashboard will send the updated user inside the user key of the body
+      // But the request from myAccount will send the updated user spread in the body
+      // That's why we have to do this treatment
+      const isUserUpdatingHimself = user.id === userId
+      const sanitizedBody = isUserUpdatingHimself
+        ? sanitizeBody(body)
+        : sanitizeBody(body.user)
       const updatedUser = await UserModel.query()
-        .updateAndFetchById(userId, {
+        .updateAndFetchById(sanitizedBody.id, {
           ...sanitizedBody,
         })
         .throwIfNotFound()
-      const token = UserModel.generateJWT(updatedUser)
-      res.setHeader("set-cookie", genSetCookies(token))
 
-      send({ updatedUser: sanitizeUser(updatedUser), token })
+      // If it's an update from myAccount we need to generate new cookies and new token that matches updated user
+      if (isUserUpdatingHimself) {
+        const token = UserModel.generateJWT(updatedUser)
+        res.setHeader("set-cookie", genSetCookies(token))
+        send({ updatedUser: sanitizeUser(updatedUser), token })
+
+        return
+      }
+
+      // If it's an admin that update the user the last thing we want is to give him a cookie and a token of the user he updates
+      send({ updatedUser: sanitizeUser(updatedUser) })
     },
   ],
   DELETE: [

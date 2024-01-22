@@ -1,8 +1,12 @@
 import webConfig from "@/web/webConfig"
 import axios from "axios"
 
-export const getRequest = async (url, token = "") =>
-  await axios.get(`/api/${url}`, {
+export const requestWithTokenAndNoData = async (
+  url,
+  token = "",
+  method = "GET",
+) =>
+  await axios[method.toLowerCase()](`/api/${url}`, {
     headers: {
       authorization: token,
     },

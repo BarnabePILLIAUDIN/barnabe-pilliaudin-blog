@@ -10,6 +10,7 @@ import {
   pageValidator,
   passwordValidator,
 } from "@/utils/validators"
+import auth from "@/api/middlewares/auth"
 
 const handler = mw({
   GET: [
@@ -18,6 +19,7 @@ const handler = mw({
         page: pageValidator.required(),
       },
     }),
+    auth(true, { isAdmin: true, isAuthor: false }),
     async ({
       models: { UserModel },
       send,

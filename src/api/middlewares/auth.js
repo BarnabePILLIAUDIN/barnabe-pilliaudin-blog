@@ -8,8 +8,8 @@ import sanitizeUser from "@/api/utils/sanitizeUser"
 import UserModel from "@/db/models/UserModel"
 import webConfig from "@/web/webConfig"
 import jsonwebtoken, {
-  TokenExpiredError,
   JsonWebTokenError,
+  TokenExpiredError,
 } from "jsonwebtoken"
 
 const auth =
@@ -41,7 +41,6 @@ const auth =
       throwIfTokensDoesntMatch(authorization, extractedCookieToken)
 
       const dbUser = await UserModel.query().findById(user.id)
-
       throwIfNotAuthorized(requiredAuthorisation, dbUser)
       ctx.user = sanitizeUser(dbUser)
     } catch (err) {

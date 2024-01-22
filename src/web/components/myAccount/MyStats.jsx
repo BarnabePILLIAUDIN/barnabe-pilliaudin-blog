@@ -1,5 +1,5 @@
 import { useSession } from "@/web/components/SessionContext"
-import Legend from "@/web/components/my-account/Legend"
+import Legend from "@/web/components/myAccount/Legend"
 import getUserStats from "@/web/services/users/getUserStats"
 import webConfig from "@/web/webConfig"
 import {

@@ -14,10 +14,10 @@ const PaginationItem = ({ query, pathname, ...otherProps }) => (
   </li>
 )
 const Pagination = (props) => {
-  const { page, pathname, countPages } = props
+  const { page, pathname, countPages, className } = props
 
   return (
-    <nav>
+    <nav className={className}>
       <ul className="flex gap-2">
         {page > 1 && (
           <>

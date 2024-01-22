@@ -1,6 +1,6 @@
 import { useSession } from "@/web/components/SessionContext"
-import UnloggedMyAccount from "@/web/components/my-account/UnloggedMyAccount"
-import MyStats from "@/web/components/my-account/MyStats"
+import UnloggedMyAccount from "@/web/components/myAccount/UnloggedMyAccount"
+import MyStats from "@/web/components/myAccount/MyStats"
 import Button from "@/web/components/ui/Button"
 import FormField from "@/web/components/ui/FormField"
 import updateUser from "@/web/services/users/updateUser"
