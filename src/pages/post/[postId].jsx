@@ -38,6 +38,9 @@ const PostPage = ({
     await deletePost(id, token, router)
     router.push("/")
   }, [])
+  const handleRedirectToEditPost = useCallback(() => {
+    router.push(`/post/edit/${id}`)
+  }, [])
 
   return (
     <main className="pb-5 mt-8 mx-5 px-5">
@@ -50,15 +53,15 @@ const PostPage = ({
           </h3>
         </div>
       </section>
-      <section className="flex flex-col gap-5 mt-7 text-lg">
-        <p>{content}</p>
-      </section>
+      <p className="flex flex-col gap-5 mt-7 text-lg">{content}</p>
       {session && session.isAuthor && (
         <section className="flex flex-col w-56 gap-3 mt-5">
           <Button variant="error" onClick={handleDeletePost}>
             Delete post
           </Button>
-          <Button variant="dark">Edit post</Button>
+          <Button variant="dark" onClick={handleRedirectToEditPost}>
+            Edit post
+          </Button>
         </section>
       )}
       <div className="flex gap-2 items-center mt-5">

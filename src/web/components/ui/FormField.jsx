@@ -24,6 +24,7 @@ const FormField = (props) => {
         {...otherProps}
         className={clsx("rounded-md border-2 border-black", {
           "border-red-600": hasError,
+          "px-5 py-2": Component === "textarea",
         })}
       />
       {hasError && <span className="text-sm text-red-500">{error}</span>}
