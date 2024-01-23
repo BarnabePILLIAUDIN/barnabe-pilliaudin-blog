@@ -3,13 +3,13 @@ const handleExpiredSession = async (requestFn, router) => {
     const result = await requestFn()
 
     if (result?.meta?.loginAgain) {
-      router.push("/expired-session")
+      router.push("/ExpiredSession")
     }
 
     return result
   } catch (err) {
     if (err?.response?.data?.meta?.loginAgain) {
-      router.push("/expired-session")
+      router.push("/ExpiredSession")
     }
 
     return err.response.data
