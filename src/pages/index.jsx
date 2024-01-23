@@ -2,6 +2,7 @@ import { pageValidator } from "@/utils/validators"
 import PostCard from "@/web/components/post/PostCard"
 import Pagination from "@/web/components/ui/Pagination"
 import getPosts from "@/web/services/posts/getPosts"
+import webConfig from "@/web/webConfig"
 
 export const getServerSideProps = async ({ query: { page } }) => {
   const sanitizedPage = page ?? 1
@@ -30,7 +31,11 @@ const Home = ({ latestPosts, page, count }) => (
       ))}
     </section>
     <div className="mt-8 flex justify-center">
-      <Pagination pathname="/" page={page} countPages={count} />
+      <Pagination
+        pathname="/"
+        page={page}
+        countPages={count / webConfig.pagination.limit}
+      />
     </div>
   </main>
 )
