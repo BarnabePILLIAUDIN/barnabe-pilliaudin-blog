@@ -17,9 +17,10 @@ export const SessionContextProvider = (props) => {
   const signIn = useCallback((jwt) => {
     localStorage.setItem(webConfig.security.session.cookie.key, jwt)
 
-    const { payload } = jsonwebtoken.decode(jwt)
-
-    setSession(payload)
+    const {
+      payload: { user },
+    } = jsonwebtoken.decode(jwt)
+    setSession(user)
   }, [])
   const signOut = useCallback(async () => {
     await axios.delete("/api/sessions")
