@@ -46,12 +46,14 @@ const Dashboard = ({ page }) => {
         fetchUsers={fetchUsers}
         className="mt-5 flex  justify-center"
       />
-      <Pagination
-        page={page}
-        pathname="/admin"
-        countPage={userCount}
-        className="mt-7 mx-auto"
-      />
+      <div className="flex justify-center">
+        <Pagination
+          page={page}
+          pathname="/admin"
+          countPage={userCount}
+          className="mt-7 mx-auto"
+        />
+      </div>
     </div>
   )
 }

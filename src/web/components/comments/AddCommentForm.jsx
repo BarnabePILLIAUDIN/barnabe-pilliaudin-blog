@@ -30,7 +30,7 @@ const addCommentForm = ({ postId, ...otherProps }) => {
   const handleSubmit = async ({ content }) => {
     const result = await mutateAsync(content)
 
-    if (!result.meta.loginAgain) {
+    if (!result.meta || !result.meta.loginAgain) {
       router.push(`/post/${postId}`)
     }
   }

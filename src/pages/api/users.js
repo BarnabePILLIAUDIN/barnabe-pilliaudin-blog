@@ -28,7 +28,8 @@ const handler = mw({
       },
     }) => {
       const query = UserModel.query()
-      const users = await query.clone().page(page)
+      // Event though the order by id doesn't seem necessary I need so the users order doesn't change when updated on admin dashboard
+      const users = await query.clone().orderBy("id").page(page)
       const [{ count }] = await query.clone().count()
       send(sanitizeUsers(users), { count })
     },
