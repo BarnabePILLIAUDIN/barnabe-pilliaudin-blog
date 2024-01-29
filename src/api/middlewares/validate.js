@@ -26,7 +26,7 @@ const validate =
           },
         )
 
-      ctx.input = sanitizedInput
+      ctx.input = { ...ctx.input, ...sanitizedInput }
 
       await next()
     } catch (err) {

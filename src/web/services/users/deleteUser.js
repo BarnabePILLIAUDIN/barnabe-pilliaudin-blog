@@ -3,7 +3,7 @@ import handleExpiredSession from "@/web/utils/handleExpiredSession"
 
 const deleteFunction = (id, token) => async () =>
   await requestWithTokenAndNoData(`users/${id}`, token, "delete")
-const deleteUser = async (id, token, router) =>
-  await handleExpiredSession(deleteFunction(id, token), router)
+const deleteUser = async (user, token, router) =>
+  await handleExpiredSession(deleteFunction(user.id, token), router)
 
 export default deleteUser

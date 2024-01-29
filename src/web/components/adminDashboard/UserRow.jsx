@@ -9,26 +9,15 @@ import toggleIsAdmin from "@/web/services/users/toggleIsAdmin"
 
 const UserRow = ({ user, fetchUsers }) => {
   const router = useRouter()
-  const handleDeleteUser = useCallback(async () => {
+  const handleToggle = (toggleFn) => async () => {
     const token = localStorage.getItem(webConfig.security.session.cookie.key)
-    await deleteUser(user.id, token, router)
+    await toggleFn(token, router, user)
     await fetchUsers()
-  }, [])
-  const handleToggleBanUser = useCallback(async () => {
-    const token = localStorage.getItem(webConfig.security.session.cookie.key)
-    await toggleBanUser(user, token, router)
-    await fetchUsers()
-  }, [])
-  const handleToggleIsAuthor = useCallback(async () => {
-    const token = localStorage.getItem(webConfig.security.session.cookie.key)
-    await toggleIsAuthor(user, token, router)
-    await fetchUsers()
-  }, [])
-  const handleToggleIsAdmin = useCallback(async () => {
-    const token = localStorage.getItem(webConfig.security.session.cookie.key)
-    await toggleIsAdmin(user, token, router)
-    await fetchUsers()
-  }, [])
+  }
+  const handleDeleteUser = useCallback(handleToggle(deleteUser), [])
+  const handleToggleBanUser = useCallback(handleToggle(toggleBanUser), [])
+  const handleToggleIsAuthor = useCallback(handleToggle(toggleIsAuthor), [])
+  const handleToggleIsAdmin = useCallback(handleToggle(toggleIsAdmin), [])
 
   return (
     <tr key={user.id}>
