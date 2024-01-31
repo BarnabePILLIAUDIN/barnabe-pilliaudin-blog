@@ -12,8 +12,9 @@ import {
 const SessionContext = createContext()
 
 export const useSession = () => useContext(SessionContext)
+const initializeState = () => ({})
 export const SessionContextProvider = (props) => {
-  const [session, setSession] = useState(null)
+  const [session, setSession] = useState(initializeState)
   const signIn = useCallback((jwt) => {
     localStorage.setItem(webConfig.security.session.cookie.key, jwt)
 

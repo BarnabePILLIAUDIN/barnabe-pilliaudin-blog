@@ -1,3 +1,4 @@
+import webConfig from "@/web/webConfig"
 import { UserCircleIcon } from "@heroicons/react/24/outline"
 import clsx from "clsx"
 
@@ -17,7 +18,7 @@ const CommentCard = ({
     {...otherProps}
   >
     <div className="flex items-center gap-2">
-      <UserCircleIcon width={20} height={20} />
+      <UserCircleIcon width={webConfig.icon.s} height={webConfig.icon.s} />
       <h4 className="text-md font-medium">
         {firstName} {lastName}
       </h4>

@@ -2,9 +2,11 @@ import CommentCard from "@/web/components/comments/CommentCard"
 import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline"
 import { useCallback, useState } from "react"
 import AddCommentForm from "./AddCommentForm"
+import webConfig from "@/web/webConfig"
 
+const initializeState = () => webConfig.pagination.limit
 const CommentSection = ({ comments, postId }) => {
-  const [maxComments, setMaxComments] = useState(5)
+  const [maxComments, setMaxComments] = useState(initializeState)
   const seeMoreComments = useCallback(() => {
     setMaxComments(maxComments + 5)
   })
@@ -14,7 +16,10 @@ const CommentSection = ({ comments, postId }) => {
       <h3 className=" font-medium text-3xl">Comments</h3>
       <div className="flex items-center gap-2">
         <h4 className="text-md font-medium">{comments.length} </h4>
-        <ChatBubbleBottomCenterTextIcon width={20} height={20} />
+        <ChatBubbleBottomCenterTextIcon
+          width={webConfig.icon.s}
+          height={webConfig.icon.s}
+        />
       </div>
       <AddCommentForm postId={postId} />
       {comments

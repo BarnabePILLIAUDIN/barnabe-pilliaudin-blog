@@ -1,3 +1,4 @@
+import webConfig from "@/web/webConfig"
 import {
   ChatBubbleBottomCenterTextIcon,
   EyeIcon,
@@ -27,7 +28,7 @@ const PostCard = ({
       <h3 className="text-xl font-bold">{title}</h3>
       <div className="flex items-center mt-2 justify-between mr‡-2">
         <div className="flex items-center gap-5">
-          <UserCircleIcon width={50} height={50} />
+          <UserCircleIcon width={webConfig.icon.l} height={webConfig.icon.l} />
           <h4 className="text-lg font-medium">
             {firstName} {lastName}
           </h4>
@@ -35,11 +36,14 @@ const PostCard = ({
         <div className="flex gap-6 items-center">
           <div className="flex items-center gap-2">
             <h4 className="text-lg font-medium">{comments.length} </h4>
-            <ChatBubbleBottomCenterTextIcon width={30} height={30} />
+            <ChatBubbleBottomCenterTextIcon
+              width={webConfig.icon.m}
+              height={webConfig.icon.m}
+            />
           </div>
           <div className="flex items-center gap-2">
             <h4 className="text-lg font-medium">{views} </h4>
-            <EyeIcon width={30} height={30} />
+            <EyeIcon width={webConfig.icon.m} height={webConfig.icon.m} />
           </div>
         </div>
       </div>

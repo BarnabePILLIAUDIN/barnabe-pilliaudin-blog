@@ -10,13 +10,14 @@ import {
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 
+const initializeState = () => ({
+  posts: [],
+  postCount: 0,
+  commentCount: 0,
+})
 const MyStats = ({ ...props }) => {
   const router = useRouter()
-  const [myStats, setMyStats] = useState({
-    posts: [],
-    postCount: 0,
-    commentCount: 0,
-  })
+  const [myStats, setMyStats] = useState(initializeState)
   const { session: user } = useSession()
   useEffect(() => {
     const token = localStorage.getItem(webConfig.security.session.cookie.key)
@@ -40,17 +41,23 @@ const MyStats = ({ ...props }) => {
       <h3 className="text-center font-bold text-2xl">Your stats</h3>
       <div className="flex flex-row items-center gap-3 justify-center mt-4">
         <div className="flex flex-row items-center gap-1">
-          <ChatBubbleBottomCenterTextIcon width={30} height={30} />
+          <ChatBubbleBottomCenterTextIcon
+            width={webConfig.icon.m}
+            height={webConfig.icon.m}
+          />
           <h3 className="text-2xl font-bold">{myStats.commentCount ?? 0}</h3>
         </div>
         {user.isAuthor && (
           <>
             <div className="flex flex-row items-center gap-1">
-              <DocumentMinusIcon width={30} height={30} />
+              <DocumentMinusIcon
+                width={webConfig.icon.m}
+                height={webConfig.icon.m}
+              />
               <h3 className="text-2xl font-bold">{myStats.postCount ?? 0}</h3>
             </div>
             <div className="flex flex-row items-center gap-1">
-              <EyeIcon width={30} height={30} />
+              <EyeIcon width={webConfig.icon.m} height={webConfig.icon.m} />
               <h3 className="text-2xl font-bold">{myStats.postViews ?? 0}</h3>
             </div>
           </>

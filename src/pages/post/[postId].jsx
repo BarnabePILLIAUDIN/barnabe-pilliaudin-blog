@@ -47,7 +47,7 @@ const PostPage = ({
       <section>
         <h2 className="font-extrabold text-4xl ">{title}</h2>
         <div className="flex w- gap-3 mt-5 items-center">
-          <UserCircleIcon width={50} height={50} />
+          <UserCircleIcon width={webConfig.icon.l} height={webConfig.icon.l} />
           <h3 className=" font-medium text-3xl">
             {firstName} {lastName}
           </h3>
@@ -65,7 +65,7 @@ const PostPage = ({
         </section>
       )}
       <div className="flex gap-2 items-center mt-5">
-        <EyeIcon width={30} height={30} />
+        <EyeIcon width={webConfig.icon.m} height={webConfig.icon.m} />
         <p className="font-semibold">{views}</p>
       </div>
       <CommentSection comments={comments} postId={id} />

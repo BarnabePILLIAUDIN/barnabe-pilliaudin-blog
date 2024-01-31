@@ -15,7 +15,7 @@ const NavBar = () => {
           {session ? (
             <>
               <li>
-                <Link href="/myAccount">My account</Link>
+                <Link href="/my-account">My account</Link>
               </li>
               {session.isAuthor && (
                 <li>

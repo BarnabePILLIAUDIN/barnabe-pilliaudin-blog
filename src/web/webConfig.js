@@ -15,6 +15,11 @@ const validationSchema = object({
   pagination: object({
     limit: number().required(),
   }).noUnknown(),
+  icon: object({
+    s: number().required(),
+    m: number().required(),
+    l: number().required(),
+  }).noUnknown(),
 }).noUnknown()
 
 let webConfig = null
@@ -34,6 +39,11 @@ try {
     },
     pagination: {
       limit: 5,
+    },
+    icon: {
+      s: 20,
+      m: 30,
+      l: 50,
     },
   })
 } catch (error) {
