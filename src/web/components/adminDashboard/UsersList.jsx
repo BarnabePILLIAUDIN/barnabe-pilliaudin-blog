@@ -5,6 +5,7 @@ const UsersList = ({ users, fetchUsers, ...otherProps }) => (
     <table>
       <thead>
         <tr>
+          <th></th>
           <th className="border-2 border-black p-2 bg-slate-400">First name</th>
           <th className="border-2 border-black p-2 bg-slate-400">Last name</th>
           <td className="border-2 border-black p-2 bg-slate-400"></td>

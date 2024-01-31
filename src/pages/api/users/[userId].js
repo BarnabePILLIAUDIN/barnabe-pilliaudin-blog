@@ -83,6 +83,24 @@ const handler = mw({
       send(sanitizeUser(deletedUser))
     },
   ],
+  GET: [
+    validate({
+      query: {
+        userId: idValidator.required(),
+      },
+    }),
+    auth(true, { isAuthor: false, isAdmin: true }),
+    async ({
+      models: { UserModel },
+      send,
+      input: {
+        query: { userId },
+      },
+    }) => {
+      const user = await UserModel.query().findById(userId).throwIfNotFound()
+      send(sanitizeUser(user))
+    },
+  ],
 })
 
 export default handler

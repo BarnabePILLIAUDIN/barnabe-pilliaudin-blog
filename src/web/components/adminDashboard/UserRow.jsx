@@ -6,7 +6,9 @@ import webConfig from "@/web/webConfig"
 import toggleBanUser from "@/web/services/users/toggleBanUser"
 import toggleIsAuthor from "@/web/services/users/toggleIsAuthor"
 import toggleIsAdmin from "@/web/services/users/toggleIsAdmin"
+import { PencilIcon } from "@heroicons/react/24/outline"
 
+const cellClass = "border-2 border-black p-2"
 const UserRow = ({ user, fetchUsers }) => {
   const router = useRouter()
   const handleToggle = (toggleFn) => async () => {
@@ -18,18 +20,26 @@ const UserRow = ({ user, fetchUsers }) => {
   const handleToggleBanUser = useCallback(handleToggle(toggleBanUser), [])
   const handleToggleIsAuthor = useCallback(handleToggle(toggleIsAuthor), [])
   const handleToggleIsAdmin = useCallback(handleToggle(toggleIsAdmin), [])
+  const handleRedirectToEditUser = useCallback(() => {
+    router.push(`/admin/edit-user/${user.id}`)
+  }, [])
 
   return (
     <tr key={user.id}>
-      <td className="border-2 border-black p-2">{user.firstName}</td>
-      <td className="border-2 border-black p-2">{user.lastName}</td>
-      <td className="border-2 border-black p-2" onClick={handleToggleBanUser}>
+      <td className={cellClass}>
+        <button onClick={handleRedirectToEditUser}>
+          <PencilIcon width={webConfig.icon.s} height={webConfig.icon.s} />
+        </button>
+      </td>
+      <td className={cellClass}>{user.firstName}</td>
+      <td className={cellClass}>{user.lastName}</td>
+      <td className={cellClass} onClick={handleToggleBanUser}>
         <Button variant={"dark"}>{user.isActive ? "ban" : "unban"}</Button>
       </td>
-      <td className="border-2 border-black p-2" onClick={handleDeleteUser}>
+      <td className={cellClass} onClick={handleDeleteUser}>
         <Button variant={"error"}>Delete user</Button>
       </td>
-      <td className="border-2 border-black p-2">
+      <td className={cellClass}>
         <Button
           variant={user.isAuthor ? "error" : "secondary"}
           onClick={handleToggleIsAuthor}
@@ -37,7 +47,7 @@ const UserRow = ({ user, fetchUsers }) => {
           {user.isAuthor ? "Remove author" : "Promote Author"}
         </Button>
       </td>
-      <td className="border-2 border-black p-2">
+      <td className={cellClass}>
         <Button
           variant={user.isAdmin ? "error" : "secondary"}
           onClick={handleToggleIsAdmin}

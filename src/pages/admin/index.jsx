@@ -12,10 +12,12 @@ export const getServerSideProps = ({ query: { page } }) => ({
     page: page ?? 1,
   },
 })
+const initializeCountState = () => 0
+const initializeUsersState = () => []
 const Dashboard = ({ page }) => {
   const { session } = useSession()
-  const [users, setUser] = useState([])
-  const [userCount, setUserCount] = useState(0)
+  const [users, setUser] = useState(initializeUsersState)
+  const [userCount, setUserCount] = useState(initializeCountState)
   const router = useRouter()
   const fetchUsers = useCallback(async () => {
     const token = localStorage.getItem(webConfig.security.session.cookie.key)
