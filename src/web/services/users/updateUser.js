@@ -5,7 +5,7 @@ const updateFunction = (id, values) => async () =>
   await request(`users/${id}`, "PATCH", {
     ...values,
   })
-const updateUser = async (values, router, user) =>
-  await handleExpiredSession(updateFunction(user.id, values), router)
+const updateUser = async (id, values, router) =>
+  await handleExpiredSession(updateFunction(id, values), router)
 
 export default updateUser

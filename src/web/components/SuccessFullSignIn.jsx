@@ -7,7 +7,7 @@ const SuccessFullSignIn = () => (
     </h2>
     <div className="flex flex-col text-center mt-5 gap-2 text-lg font-semibold">
       <Link href="/">Go to home page</Link>
-      <Link href="/myAccount">Go to my account</Link>
+      <Link href="/my-account">Go to my account</Link>
     </div>
   </div>
 )

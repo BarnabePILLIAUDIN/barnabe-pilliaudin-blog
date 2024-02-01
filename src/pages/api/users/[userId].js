@@ -3,6 +3,7 @@ import auth from "@/api/middlewares/auth"
 import validate from "@/api/middlewares/validate"
 import mw from "@/api/mw"
 import sanitizeBody from "@/api/utils/auth/sanitizeBody"
+import genCookiesJwt from "@/api/utils/genCookiesJWT"
 import genSetCookies from "@/api/utils/genSetCookies"
 import sanitizeUser from "@/api/utils/sanitizeUser"
 import {
@@ -13,6 +14,9 @@ import {
 
 const handler = mw({
   PATCH: [
+    async ({ next }) => {
+      await next()
+    },
     validate({
       query: {
         userId: idValidator.required(),
@@ -22,7 +26,13 @@ const handler = mw({
         lastName: lastNameValidator,
       },
     }),
+    async ({ next }) => {
+      await next()
+    },
     auth(),
+    async ({ next }) => {
+      await next()
+    },
     async ({
       send,
       res,
@@ -40,21 +50,23 @@ const handler = mw({
       // The requests from admin dashboard will send the updated user inside the user key of the body
       // But the request from myAccount will send the updated user spread in the body
       // That's why we have to do this treatment
-      const isUserUpdatingHimself = user.id === userId
-      const sanitizedBody = isUserUpdatingHimself
-        ? sanitizeBody(body)
-        : sanitizeBody(body.user)
+      const sanitizedBody = body.user
+        ? sanitizeBody(body.user)
+        : sanitizeBody(body)
       const updatedUser = await UserModel.query()
-        .updateAndFetchById(sanitizedBody.id, {
+        .updateAndFetchById(userId, {
           ...sanitizedBody,
         })
         .throwIfNotFound()
+      const isUserUpdatingHimself = user.id === userId
 
       // If it's an update from myAccount we need to generate new cookies and new token that matches updated user
       if (isUserUpdatingHimself) {
-        const token = UserModel.generateJWT(updatedUser)
-        res.setHeader("set-cookie", genSetCookies(token))
-        send({ updatedUser: sanitizeUser(updatedUser), token })
+        const localStorageJwt = UserModel.generateJWT(user)
+        const cookieJwt = genCookiesJwt(localStorageJwt)
+
+        res.setHeader("set-cookie", genSetCookies(cookieJwt))
+        send({ updatedUser: sanitizeUser(updatedUser), token: localStorageJwt })
 
         return
       }

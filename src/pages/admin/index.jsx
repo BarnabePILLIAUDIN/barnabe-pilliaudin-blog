@@ -21,14 +21,19 @@ const Dashboard = ({ page }) => {
   const router = useRouter()
   const fetchUsers = useCallback(async () => {
     const token = localStorage.getItem(webConfig.security.session.cookie.key)
-    const {
-      data: {
-        result,
-        meta: { count },
-      },
-    } = await getUsers(token, router)
-    setUser(result)
-    setUserCount(count)
+
+    try {
+      const {
+        data: {
+          result,
+          meta: { count },
+        },
+      } = await getUsers(token, router)
+      setUser(result)
+      setUserCount(count)
+    } catch (error) {
+      router.push("/expired-session")
+    }
   }, [])
   useEffect(() => {
     ;(async () => await fetchUsers())()
