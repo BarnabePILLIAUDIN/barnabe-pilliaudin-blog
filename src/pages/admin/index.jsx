@@ -28,16 +28,16 @@ const Dashboard = ({ page }) => {
           result,
           meta: { count },
         },
-      } = await getUsers(token, router)
+      } = await getUsers(token, router, page)
       setUser(result)
-      setUserCount(count)
+      setUserCount(Number.parseInt(count, 10))
     } catch (error) {
       router.push("/expired-session")
     }
-  }, [])
+  }, [page, router])
   useEffect(() => {
     ;(async () => await fetchUsers())()
-  }, [])
+  }, [fetchUsers, page])
 
   if (!session || !session.isAdmin) {
     return (
@@ -55,9 +55,9 @@ const Dashboard = ({ page }) => {
       />
       <div className="flex justify-center">
         <Pagination
-          page={page}
+          page={Number.parseInt(page, 10)}
           pathname="/admin"
-          countPage={userCount}
+          countPages={Math.ceil(userCount / webConfig.pagination.limit)}
           className="mt-7 mx-auto"
         />
       </div>

@@ -61,7 +61,7 @@ const EditPostPage = ({ post: { id, title, content } }) => {
       )
       router.push("/")
     },
-    [],
+    [id, router],
   )
 
   if (!session || !session.isAuthor) {

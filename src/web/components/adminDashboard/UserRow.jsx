@@ -16,13 +16,13 @@ const UserRow = ({ user, fetchUsers }) => {
     await toggleFn(token, router, user)
     await fetchUsers()
   }
-  const handleDeleteUser = useCallback(handleToggle(deleteUser), [])
-  const handleToggleBanUser = useCallback(handleToggle(toggleBanUser), [])
-  const handleToggleIsAuthor = useCallback(handleToggle(toggleIsAuthor), [])
-  const handleToggleIsAdmin = useCallback(handleToggle(toggleIsAdmin), [])
+  const handleDeleteUser = handleToggle(deleteUser)
+  const handleToggleBanUser = handleToggle(toggleBanUser)
+  const handleToggleIsAuthor = handleToggle(toggleIsAuthor)
+  const handleToggleIsAdmin = handleToggle(toggleIsAdmin)
   const handleRedirectToEditUser = useCallback(() => {
     router.push(`/admin/edit-user/${user.id}`)
-  }, [])
+  }, [router, user.id])
 
   return (
     <tr key={user.id}>

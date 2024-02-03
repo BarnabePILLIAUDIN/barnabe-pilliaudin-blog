@@ -37,10 +37,10 @@ const PostPage = ({
     const token = localStorage.getItem(webConfig.security.session.cookie.key)
     await deletePost(id, token, router)
     router.push("/")
-  }, [])
+  }, [router, id])
   const handleRedirectToEditPost = useCallback(() => {
     router.push(`/post/edit/${id}`)
-  }, [])
+  }, [router, id])
 
   return (
     <main className="pb-5 mt-8 mx-5 px-5">

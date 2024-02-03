@@ -34,7 +34,7 @@ const MyStats = ({ ...props }) => {
         setMyStats({ postCount, commentCount, postViews })
       }
     })()
-  }, [])
+  }, [router])
 
   return (
     <div {...props}>

@@ -1,15 +1,15 @@
 import CommentCard from "@/web/components/comments/CommentCard"
 import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import AddCommentForm from "./AddCommentForm"
 import webConfig from "@/web/webConfig"
 
 const initializeState = () => webConfig.pagination.limit
 const CommentSection = ({ comments, postId }) => {
   const [maxComments, setMaxComments] = useState(initializeState)
-  const seeMoreComments = useCallback(() => {
+  const seeMoreComments = () => {
     setMaxComments(maxComments + 5)
-  })
+  }
 
   return (
     <section className="mt-5">

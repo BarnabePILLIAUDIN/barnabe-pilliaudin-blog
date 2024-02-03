@@ -36,8 +36,6 @@ const EditUser = ({ userId }) => {
     return <div>Loading...</div>
   }
 
-  console.log(data)
-
   return <AdminEditUser user={data} />
 }
 
